@@ -5,11 +5,11 @@ from django.shortcuts import render
 
 
 def index(request):
-    pass
+    return render(request, 'adopt/index.html')
 
 
 def search(request):
-    pass
+    return render(request, 'adopt/search.html')
 
 
 def search_query(request):
@@ -17,7 +17,7 @@ def search_query(request):
 
 
 def pet_detail(request, id):
-    pass
+    return render(request, 'adopt/pet_detail.html')
 
 
 def shelters(request):
@@ -25,4 +25,4 @@ def shelters(request):
 
 
 def shelter_detail(request, id):
-    pass
+    return render(request, 'adopt/shelter_detail.html')
