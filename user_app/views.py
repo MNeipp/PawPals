@@ -5,6 +5,7 @@ import bcrypt
 
 # Create your views here.
 
+
 def login(request):
     if request.method == "GET":
         return render(request, "login.html")
@@ -20,11 +21,11 @@ def login(request):
                 request.session['user_id'] = logged_user.id
                 return redirect(reverse('list'))
             else:
-                messages.error(request,"Incorrect password", extra_tags="password")
+                messages.error(request, "Incorrect password", extra_tags="password")
                 return redirect(reverse('login'))
         else:
             messages.error(request, "E-mail not registered", extra_tags="email")
-            return redirect (reverse('login'))
+            return redirect(reverse('login'))
 
 
 def register(request):
@@ -35,38 +36,41 @@ def register(request):
         if len(errors) > 0:
             for key, value in errors.items():
                 messages.error(request,value, extra_tags=key)
-            return redirect (reverse('register'))
+            return redirect(reverse('register'))
         else:
             first_name = request.POST['first_name']
-            last_name=request.POST['last_name']
+            last_name = request.POST['last_name']
             email = request.POST['email']
             password = request.POST['password']
             pswd_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
             user = User.objects.create(first_name=first_name, last_name = last_name, email=email, password=pswd_hash)
             if "user_id" not in request.session:
                 request.session['user_id'] = user.id
-            return redirect (reverse("list"))
+            return redirect(reverse("list"))
+
 
 def logout(request):
     request.session.flush()
-    return redirect (reverse("index"))
+    return redirect(reverse("index"))
+
 
 def user_profile(request):
     if 'user_id' not in request.session:
         return reverse('login')
     else:
-        context={
+        context = {
             'logged_user': User.objects.get(id=request.session['user_id'])
         }
         return render(request, "user_profile.html", context)
+
 
 def update_profile(request):
     if request.method == "GET":
         return redirect(reverse('index'))
     errors = User.objects.info_validator(request.POST)
     if len(errors) > 0:
-        for key,value in errors.items():
-            messages.error(request,value, extra_tags=key)
+        for key, value in errors.items():
+            messages.error(request, value, extra_tags=key)
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     logged_user = User.objects.get(id=request.session['user_id'])
     logged_user.first_name = request.POST['first_name']
@@ -81,13 +85,14 @@ def update_profile(request):
     logged_user.save()
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
+
 def update_password(request):
     if request.method == "GET":
         return redirect(reverse('index'))
     logged_user = User.objects.get(id=request.session['user_id'])
     if bcrypt.checkpw(request.POST['current_password'].encode(), logged_user.password.encode()):
         if len(request.POST['new_password']) < 8:
-            messages.error(request,"Password must be at least 8 characters long", extra_tags="confirm")
+            messages.error(request, "Password must be at least 8 characters long", extra_tags="confirm")
             return redirect(reverse('user_profile'))
         elif request.POST['new_password'] != request.POST['confirm_password']:
             messages.error(request, "Passwords don't match", extra_tags="confirm")
@@ -99,6 +104,5 @@ def update_password(request):
             logged_user.save()
             return redirect(reverse('user_profile'))
     else:
-        messages.error(request,"Incorrect password", extra_tags="password")
+        messages.error(request, "Incorrect password", extra_tags="password")
         return redirect(reverse('user_profile'))
-    
