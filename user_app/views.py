@@ -106,3 +106,8 @@ def update_password(request):
     else:
         messages.error(request, "Incorrect password", extra_tags="password")
         return redirect(reverse('user_profile'))
+
+
+def favorites(request, id):
+    # return user's favorites
+    pass

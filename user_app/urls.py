@@ -9,4 +9,5 @@ urlpatterns = [
     path('profile', user_views.user_profile, name="user_profile"),
     path('profile/update', user_views.update_profile, name="update_user_profile"),
     path('profile/update_password', user_views.update_password, name="update_password"),
+    path('profile/favorites/<int:id>', user_views.favorites, name="favorites"),
 ]

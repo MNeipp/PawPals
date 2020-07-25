@@ -21,8 +21,13 @@ def pet_detail(request, id):
 
 
 def shelters(request):
-    pass
+    return render(request, 'adopt/shelters.html')
 
 
 def shelter_detail(request, id):
     return render(request, 'adopt/shelter_detail.html')
+
+
+def about(request):
+    # quick bio page
+    return render(request, 'adopt/about.html')
