@@ -1,47 +1,93 @@
-{% extends 'adopt/base.html' %}
+{% extends 'adopt/base2.html' %}
 
 {% block content %}
-    <div class="jumbotron jumbotron-fluid big-banner">
-        <br>
-        <div class="row">
-            <div class="col-lg-1"></div>
 
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">So, who are you looking for in a <br>soul-mate?</h5>
-                        <form action="#">
-                            <div class="form-group">
-                                <select class="custom-select" name="size">
-                                    <option selected="">Pick a Size</option>
-                                    <option value="1">run</option>
-                                    <option value="2">a</option>
-                                    <option value="3">loop</option>
-                                </select>
-                            </div>
-                            <div class="form-group">   
-                                <select class="custom-select" name="breed">
-                                    <option selected="">Pick a Breed</option>
-                                    <option value="1">run</option>
-                                    <option value="2">a</option>
-                                    <option value="3">loop</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select class="custom-select" name="age">
-                                    <option selected="">Pick an Age Range</option>
-                                    <option value="1">run</option>
-                                    <option value="2">a</option>
-                                    <option value="3">loop</option>
-                                </select>
-                            </div>
-                            <input type="submit" value="Let's Go!" class="btn btn-primary">
-                        </form>
-                    </div>
+
+<div class="big-banner">
+
+    <nav class="navbar navbar-expand-lg navbar-white">
+        <a class="navbar-brand" href="/adopt">PawPals</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/adopt">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search">Find a Dog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/shelters">Shelters</a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/about">About Us</a>
+                {% if logged_user %}
+                <a class="nav-link" href="/profile">Profile</a>
+                <a class="nav-link" href="/profile/favorites">Favorites</a>
+
+                <a class="nav-link" href="/logout">Log Out</a>
+                {% else %}
+                <a class="nav-link" href="/login">Log In</a>
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <div class="row">
+        <div class="col-sm-1"></div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">So, who are you looking for in a <br>soul-mate?</h5>
+                    <form action="#" method="">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <select class="custom-select" name="size">
+                                <option selected="">Pick a Size</option>
+                                <option value="1">run</option>
+                                <option value="2">a</option>
+                                <option value="3">loop</option>
+                            </select>
+                        </div>
+                        <div class="form-group">   
+                            <select class="custom-select" name="breed">
+                                <option selected="">Pick a Breed</option>
+                                <option value="1">run</option>
+                                <option value="2">a</option>
+                                <option value="3">loop</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="custom-select" name="age">
+                                <option selected="">Pick an Age Range</option>
+                                <option value="1">run</option>
+                                <option value="2">a</option>
+                                <option value="3">loop</option>
+                            </select>
+                        </div>
+                        <a href="#" class="btn btn-info">Let's go!</a>
+                    </form>
                 </div>
             </div>
-
         </div>
+
     </div>
+
+
+</div>
+
+
 
 {% endblock %}

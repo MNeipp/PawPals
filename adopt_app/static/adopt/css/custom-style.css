@@ -4,6 +4,13 @@
     background-size: cover;    
     min-height: 1047px;
 }
-/* .container {
-    background-color: black;
-} */
+
+/* .type = div class for divs containing written elements to increase legibility */
+.type {
+    margin: 5px;
+}
+
+.semi-transparent {
+    background-color: white;
+    opacity: 0.2;
+}
