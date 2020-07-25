@@ -9,3 +9,8 @@
 .type {
     margin: 5px;
 }
+
+.semi-transparent {
+    background-color: white;
+    opacity: 0.2;
+}
