@@ -1,67 +1,112 @@
-{% extends 'adopt/base.html' %}
+{% extends 'adopt/base2.html' %}
 
 {% block content %}
 <div class="container-fluid" style="background-image: url('/static/adopt/images/white-and-black-short-coat-puppy-on-black-window-car-134392.jpg'); background-size:cover; background-position: center center; min-height:1027px">
-    <div class="row">
-        <div class="col-sm-12 col-md-6 mb-4 ml-5 mt-3">
-            <h1 class="text-dark">Register</h1>
-            <form action="{% url 'register' %}" class="mt-4" method="POST" id="register-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="email" class="col-form-label text-dark">Email:</label>
-                    <input type="email" class="form-control col-sm-9" name="email" id="email">
-                    {% for message in messages %}
-                    {% if "email" in message.extra_tags %}
-                    <p class="text-danger"><small>{{message}}</small></p>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="form-group">
-                    <label for="first_name" class="col-form-label text-dark">First Name:</label>
-                    <input type="text" class="form-control col-sm-9" name="first_name" id="first_name">
-                    {% for message in messages %}
-                    {% if "first_name" in message.extra_tags %}
-                    <p class="text-danger"><small>{{message}}</small></p>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="form-group">
-                    <label for="last_name" class="col-form-label text-dark">Last Name:</label>
-                    <input type="text" class="form-control col-sm-9" name="last_name" id="last_name">
-                    {% for message in messages %}
-                    {% if "last_name" in message.extra_tags %}
-                    <p class="text-danger"><small>{{message}}</small></p>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="form-group">
-                    <label for="password" class="col-form-label text-dark">Password:</label>
-                    <input type="password" class="form-control col-sm-9" name="password" id="password">
-                    {% for message in messages %}
-                    {% if "password" in message.extra_tags %}
-                    <p class="text-danger"><small>{{message}}</small></p>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="form-group">
-                    <label for="confirm_password" class="col-form-label text-dark">Confirm Password:</label>
-                    <input type="password" class="form-control col-sm-9" name="confirm_password" id="confirm_password">
-                    {% for message in messages %}
-                    {% if "confirm" in message.extra_tags %}
-                    <p class="text-danger"><small>{{message}}</small></p>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-            </form>
-
-            <div class="row col-sm-12 col-md-9 p-0 ml-0">
-                <input type="submit" value="Register" form="register-form"
-                    class="col-sm-12 col-md-3 btn btn-info ml-auto">
-            </div>
-            <br>
-            <br>
-            <a href="{% url 'login' %}" class="font-weight-bold">Already have an account? Login!</a>
+    
+    <nav class="navbar navbar-expand-lg navbar-white">
+        <a class="navbar-brand" href="{% url 'home' %}">PawPals</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'search' %}">Find a Dog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shelters' %}">Shelters</a>
+                </li>
+            </ul>
         </div>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                {% if logged_user %}
+                <a class="nav-link" href="{% url 'user_profile' %}">Profile</a>
+                <a class="nav-link" href="{% url 'favorites' logged_user.id%}">Favorites</a>
+
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <br>
+    
+    <div class="row">
+        <div class="col-sm-1"></div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Register</h5>
+                    <form action="{% url 'register' %}" class="mt-4" method="POST" id="register-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email" class="col-form-label text-dark">Email:</label>
+                            <input type="email" class="form-control" name="email" id="email">
+                            {% for message in messages %}
+                            {% if "email" in message.extra_tags %}
+                            <p class="text-danger"><small>{{message}}</small></p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name" class="col-form-label text-dark">First Name:</label>
+                            <input type="text" class="form-control" name="first_name" id="first_name">
+                            {% for message in messages %}
+                            {% if "first_name" in message.extra_tags %}
+                            <p class="text-danger"><small>{{message}}</small></p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="col-form-label text-dark">Last Name:</label>
+                            <input type="text" class="form-control" name="last_name" id="last_name">
+                            {% for message in messages %}
+                            {% if "last_name" in message.extra_tags %}
+                            <p class="text-danger"><small>{{message}}</small></p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-form-label text-dark">Password:</label>
+                            <input type="password" class="form-control" name="password" id="password">
+                            {% for message in messages %}
+                            {% if "password" in message.extra_tags %}
+                            <p class="text-danger"><small>{{message}}</small></p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password" class="col-form-label text-dark">Confirm Password:</label>
+                            <input type="password" class="form-control" name="confirm_password" id="confirm_password">
+                            {% for message in messages %}
+                            {% if "confirm" in message.extra_tags %}
+                            <p class="text-danger"><small>{{message}}</small></p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="form-group text-center">
+                            <input type="submit" value="Register" form="register-form" class="col-sm-12 col-md-3 btn btn-info ml-auto">
+                        </div>
+                    </form>
+    
+                </div>
+            </div>
+            <div class="text-center">
+                <br><br>
+                <a href="{% url 'login' %}" class="font-weight-bold">Already have an account? Login!</a>
+            </div>
+        </div>           
     </div>
 </div>
 {% endblock %}
