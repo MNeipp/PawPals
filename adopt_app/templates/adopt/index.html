@@ -1,7 +1,48 @@
 {% extends 'adopt/base.html' %}
 
 {% block content %}
+    <div class="jumbotron jumbotron-fluid big-banner">
+        <br>
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4"></div>
 
-    <p>insert page content here</p>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">So, who are you looking for in a <br>soul-mate?</h5>
+                        <form action="#">
+                            <div class="form-group">
+                                <select class="custom-select" name="size">
+                                    <option selected="">Pick a Size</option>
+                                    <option value="1">run</option>
+                                    <option value="2">a</option>
+                                    <option value="3">loop</option>
+                                </select>
+                            </div>
+                            <div class="form-group">   
+                                <select class="custom-select" name="breed">
+                                    <option selected="">Pick a Breed</option>
+                                    <option value="1">run</option>
+                                    <option value="2">a</option>
+                                    <option value="3">loop</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" name="age">
+                                    <option selected="">Pick an Age Range</option>
+                                    <option value="1">run</option>
+                                    <option value="2">a</option>
+                                    <option value="3">loop</option>
+                                </select>
+                            </div>
+                            <a href="#" class="btn btn-info">Let's go!</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 {% endblock %}
