@@ -10,7 +10,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-center">So, who are you looking for in a <br>soul-mate?</h5>
-                        <form action="#">
+                        <form action="#" method="">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <select class="custom-select" name="size">
                                     <option selected="">Pick a Size</option>
@@ -43,5 +44,6 @@
 
         </div>
     </div>
+
 
 {% endblock %}
