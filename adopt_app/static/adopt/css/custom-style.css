@@ -1,5 +1,7 @@
 .big-banner {
-    background-image: url('../images/english-cocker-spaniel-puppy-sitting-on-ground-beside-grass-1254140_left.jpg');
+    background-color: rgba(4, 65, 24, 0.918);
+    background-image: url('../images/english-cocker-spaniel-puppy-sitting-on-ground-beside-grass-1254140_right.jpg');
+    background-size: cover;    
     min-height: 1047px;
 }
 /* .container {
