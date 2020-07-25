@@ -2,8 +2,9 @@
 
 {% block content %}
 
-    
-        <div class="container">
+            <div class="row">
+                <br><br>
+            </div>
             <div class="row">
                 <div class="col-md-6 border">
                     <div class="col border type">
@@ -12,13 +13,13 @@
                     </div>
                     <div class="col border type">
                         <p> for breed in breeds </p>
-                        <p> if breeds > 1</p>
-                        <h5> A {breed|title} - {breed|title} - {breed|title} Mix</h5>
+                        <h6> A {breed|title} - {breed|title} - {breed|title} Mix</h6>
                     </div>
                     <div class="col border type">
                         <h6> {age|title} | {size|title} | {gender|title} </h6>
                     </div>
                     <div class="col border type">
+                        <h6>for color in animal['colors'] {color|title}</h6>
                         <p>{description}</p>
                     </div>
                     <div class="col border type">
@@ -29,14 +30,14 @@
                     <div class="col border type">
                         <h6>Adoption Info:</h6>
                             <li>Adoption Status: {animal['status']</li>
-                            <li>Waiting for a home since: {animal['environment']}</li>
-                            <li>Current Home: {organization_id}, </li>
+                            <li>Waiting for a home since: {animal['published_at']}</li>
                     </div>
                     <div class="col border type">
                         <h6>Shelter Information:</h6>
-                            <li>Adoption Status: {animal['status']</li>
-                            <li>Location: {shelter['location']}</li>
+                            <li>Adoption Status: {contact['status']</li>
+                            <li>Location: {address}</li>
                             <div class="text-center type">
+                                <button type="submit" href="#" class="btn btn-primary type">Contact Shelter</button>
                                 <button type="submit" href="#" class="btn btn-primary type">See Shelter Details</button>
                             </div>    
                     </div>
@@ -44,8 +45,8 @@
                 </div>
                 <div class="col-md-6 border">
                     <div class="type text-center">
-                        <button type="submit" href="#" class="btn btn-primary type">Ask About Name</button>
-                        <button type="submit" href="#" class="btn btn-primary type">Add Name to Favorites</button>
+                        <button type="submit" href="#" class="btn btn-primary type">Ask About Me</button>
+                        <button type="submit" href="#" class="btn btn-primary type">Add Me to Your Favorites</button>
                     </div>
                     <div>
                         { for photo['primary' in photo['primary' }
@@ -66,6 +67,5 @@
                     </div>
                 </div>
             </div>         
-        </div>
 
 {% endblock %}
