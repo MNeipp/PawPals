@@ -2,6 +2,70 @@
 
 {% block content %}
 
-    <p>insert page content here</p>
+            <div class="row">
+                <br><br>
+            </div>
+            <div class="row">
+                <div class="col-md-6 border">
+                    <div class="col border type">
+                        <h2>{animal['name|title']}</h2>
+                        <h6>{animal['contact']['address']['city']}, {animal['contact']['address']['state']}</h6>
+                    </div>
+                    <div class="col border type">
+                        <p> for breed in breeds </p>
+                        <h6> A {breed|title} - {breed|title} - {breed|title} Mix</h6>
+                    </div>
+                    <div class="col border type">
+                        <h6> {age|title} | {size|title} | {gender|title} </h6>
+                    </div>
+                    <div class="col border type">
+                        <h6>for color in animal['colors'] {color|title}</h6>
+                        <p>{description}</p>
+                    </div>
+                    <div class="col border type">
+                        <h6>My Info:</h6>
+                            <li>{animal['attributes']</li>
+                            <li>{animal['environment']}</li>
+                    </div>
+                    <div class="col border type">
+                        <h6>Adoption Info:</h6>
+                            <li>Adoption Status: {animal['status']</li>
+                            <li>Waiting for a home since: {animal['published_at']}</li>
+                    </div>
+                    <div class="col border type">
+                        <h6>Shelter Information:</h6>
+                            <li>Adoption Status: {contact['status']</li>
+                            <li>Location: {address}</li>
+                            <div class="text-center type">
+                                <button type="submit" href="#" class="btn btn-primary type">Contact Shelter</button>
+                                <button type="submit" href="#" class="btn btn-primary type">See Shelter Details</button>
+                            </div>    
+                    </div>
+                    
+                </div>
+                <div class="col-md-6 border">
+                    <div class="type text-center">
+                        <button type="submit" href="#" class="btn btn-primary type">Ask About Me</button>
+                        <button type="submit" href="#" class="btn btn-primary type">Add Me to Your Favorites</button>
+                    </div>
+                    <div>
+                        { for photo['primary' in photo['primary' }
+                            <li>{ photo['primary' }</li>
+                            <img src="../static/adopt/images/black-and-white-dog-1938126.jpg" alt="Picture of {animal['name']}" width="550">
+                            {if additional photos}
+                                <div class="row">
+                                    <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
+                                    <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
+                                    <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
+                                </div>
+                            { empty }
+                            <div class="text-center">
+                                <img src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="No photo available for {animal{'name'}}"></li>
+                                <button type="submit" href="#" class="btn btn-primary type">Request Photos of {animal['name']|title}</button>
+                            </div>
+                        { endfor }
+                    </div>
+                </div>
+            </div>         
 
 {% endblock %}
