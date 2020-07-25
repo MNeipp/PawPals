@@ -14,9 +14,10 @@
                             <div class="form-group">
                                 <select class="custom-select" name="size">
                                     <option selected="">Pick a Size</option>
-                                    <option value="1">run</option>
-                                    <option value="2">a</option>
-                                    <option value="3">loop</option>
+                                    <option value="small">Small</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="large">Large</option>
+                                    <option value="xlarge">Extra Large</option>
                                 </select>
                             </div>
                             <div class="form-group">   
@@ -30,12 +31,28 @@
                             <div class="form-group">
                                 <select class="custom-select" name="age">
                                     <option selected="">Pick an Age Range</option>
-                                    <option value="1">run</option>
-                                    <option value="2">a</option>
-                                    <option value="3">loop</option>
+                                    <option value="baby">Puppy</option>
+                                    <option value="young">Adolescent</option>
+                                    <option value="adult">Adult</option>
+                                    <option value="senior">Senior</option>
                                 </select>
                             </div>
-                            <input type="submit" value="Let's Go!" class="btn btn-primary">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <select name="disance" class="custom-select">
+                                        <option selected="">How far away?</option>
+                                        <option value="5">5 miles from</option>
+                                        <option value="10">10 miles from</option>
+                                        <option value="25">25 miles from</option>
+                                        <option value="50">50 miles from</option>
+                                        <option value="100">100 miles from</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <input type="text" placeholder="Zip Code" class="form-control">
+                                </div>
+                            </div>
+                            <input type="submit" value="Let's Go!" class="btn btn-info">
                         </form>
                     </div>
                 </div>
