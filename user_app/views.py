@@ -19,7 +19,7 @@ def login(request):
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
-                return redirect(reverse('list'))
+                return redirect(reverse('home'))
             else:
                 messages.error(request, "Incorrect password", extra_tags="password")
                 return redirect(reverse('login'))
@@ -46,12 +46,12 @@ def register(request):
             user = User.objects.create(first_name=first_name, last_name = last_name, email=email, password=pswd_hash)
             if "user_id" not in request.session:
                 request.session['user_id'] = user.id
-            return redirect(reverse("list"))
+            return redirect(reverse("home"))
 
 
 def logout(request):
     request.session.flush()
-    return redirect(reverse("index"))
+    return redirect(reverse("home"))
 
 
 def user_profile(request):

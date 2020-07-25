@@ -1,114 +1,67 @@
-<!doctype html>
-<html lang=>
+{% extends 'adopt/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Voca\LIST</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
-    <!-- Google Font embed -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Parisienne&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
-        rel="stylesheet">
-</head>
-
-<body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#efefef">
-            <div class="container-fluid">
-                <a href=""><img src="" class="navbar-brand"
-                        height=150px width=400px></img></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav ml-auto">
-                        <a class="nav-link font-weight-bold" href="#">About</a>
-                        <a class="nav-link font-weight-bold active disabled" href="#">Register</a>
-                    </div>
+{% block content %}
+<div class="container-fluid" style="background-image: url('/static/adopt/images/white-and-black-short-coat-puppy-on-black-window-car-134392.jpg'); background-size:cover; background-position: center center; min-height:1027px">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 mb-4 ml-5 mt-3">
+            <h1 class="text-dark">Register</h1>
+            <form action="{% url 'register' %}" class="mt-4" method="POST" id="register-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email" class="col-form-label text-dark">Email:</label>
+                    <input type="email" class="form-control col-sm-9" name="email" id="email">
+                    {% for message in messages %}
+                    {% if "email" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-            </div>
-        </nav>
-        <div class="container mt-3">
-            <div class="row">
-                <div class="col-sm-12 col-md-6 mb-4 ml-5">
-                    <h1 class="text-black">Register</h1>
-                    <form action="{% url 'register' %}" class="mt-4" method="POST" id="register-form">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="email" class="col-form-label text-black">Email:</label>
-                            <input type="email" class="form-control col-sm-9" name="email" id="email">
-                            {% for message in messages %}
-                            {% if "email" in message.extra_tags %}
-                            <p class="text-danger"><small>{{message}}</small></p>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="form-group">
-                            <label for="first_name" class="col-form-label text-black">First Name:</label>
-                            <input type="text" class="form-control col-sm-9" name="first_name" id="first_name">
-                            {% for message in messages %}
-                            {% if "first_name" in message.extra_tags %}
-                            <p class="text-danger"><small>{{message}}</small></p>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name" class="col-form-label text-black">Last Name:</label>
-                            <input type="text" class="form-control col-sm-9" name="last_name" id="last_name">
-                            {% for message in messages %}
-                            {% if "last_name" in message.extra_tags %}
-                            <p class="text-danger"><small>{{message}}</small></p>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="col-form-label text-black">Password:</label>
-                            <input type="password" class="form-control col-sm-9" name="password" id="password">
-                            {% for message in messages %}
-                            {% if "password" in message.extra_tags %}
-                            <p class="text-danger"><small>{{message}}</small></p>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm_password" class="col-form-label text-black">Confirm Password:</label>
-                            <input type="password" class="form-control col-sm-9" name="confirm_password"
-                                id="confirm_password">
-                            {% for message in messages %}
-                            {% if "confirm" in message.extra_tags %}
-                            <p class="text-danger"><small>{{message}}</small></p>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </form>
-
-                    <div class="row col-sm-12 col-md-9 p-0 ml-0">
-                        <input type="submit" value="Register" form="register-form"
-                            class="col-sm-12 col-md-3 btn btn-custom ml-auto">
-                    </div>
-                    <br>
-                    <br>
-                    <a href="{% url 'login' %}" class="font-weight-bold">Already have an account? Login!</a>
+                <div class="form-group">
+                    <label for="first_name" class="col-form-label text-dark">First Name:</label>
+                    <input type="text" class="form-control col-sm-9" name="first_name" id="first_name">
+                    {% for message in messages %}
+                    {% if "first_name" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
                 </div>
+                <div class="form-group">
+                    <label for="last_name" class="col-form-label text-dark">Last Name:</label>
+                    <input type="text" class="form-control col-sm-9" name="last_name" id="last_name">
+                    {% for message in messages %}
+                    {% if "last_name" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-form-label text-dark">Password:</label>
+                    <input type="password" class="form-control col-sm-9" name="password" id="password">
+                    {% for message in messages %}
+                    {% if "password" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password" class="col-form-label text-dark">Confirm Password:</label>
+                    <input type="password" class="form-control col-sm-9" name="confirm_password" id="confirm_password">
+                    {% for message in messages %}
+                    {% if "confirm" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </form>
+
+            <div class="row col-sm-12 col-md-9 p-0 ml-0">
+                <input type="submit" value="Register" form="register-form"
+                    class="col-sm-12 col-md-3 btn btn-info ml-auto">
             </div>
+            <br>
+            <br>
+            <a href="{% url 'login' %}" class="font-weight-bold">Already have an account? Login!</a>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-</script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-</script>
-
-</body>
-
-</html>
+</div>
+{% endblock %}
