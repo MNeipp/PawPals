@@ -24,6 +24,7 @@ def search(request):
 
 
 def search_query(request):
+
     return redirect('adopt/search.html)')
 
 
