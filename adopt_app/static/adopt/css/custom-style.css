@@ -1,5 +1,4 @@
 .big-banner {
-    background-color: rgba(4, 65, 24, 0.918);
     background-image: url('../images/english-cocker-spaniel-puppy-sitting-on-ground-beside-grass-1254140_right.jpg');
     background-size: cover;    
     min-height: 1047px;
@@ -19,9 +18,17 @@
     display: inline-block;
 }
 
-/* .img-rel {
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+.img-rel {
     position: relative;
-} */
+}
 
 /* .over-img {
     font-size: 24pt;

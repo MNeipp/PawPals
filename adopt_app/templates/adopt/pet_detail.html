@@ -1,71 +1,96 @@
-{% extends 'adopt/base.html' %}
+{% extends 'adopt/base3.html' %}
 
 {% block content %}
 
-            <div class="row">
-                <br><br>
+    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+        <a class="nav-link" href="#"></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-link"> < Back to Search</li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div class="navbar-nav ml-auto">
             </div>
-            <div class="row">
-                <div class="col-md-6 border">
-                    <div class="col border type">
-                        <h2>{animal['name|title']}</h2>
-                        <h6>{animal['contact']['address']['city']}, {animal['contact']['address']['state']}</h6>
-                    </div>
-                    <div class="col border type">
-                        <p> for breed in breeds </p>
-                        <h6> A {breed|title} - {breed|title} - {breed|title} Mix</h6>
-                    </div>
-                    <div class="col border type">
-                        <h6> {age|title} | {size|title} | {gender|title} </h6>
-                    </div>
-                    <div class="col border type">
-                        <h6>for color in animal['colors'] {color|title}</h6>
-                        <p>{description}</p>
-                    </div>
-                    <div class="col border type">
-                        <h6>My Info:</h6>
-                            <li>{animal['attributes']</li>
-                            <li>{animal['environment']}</li>
-                    </div>
-                    <div class="col border type">
-                        <h6>Adoption Info:</h6>
-                            <li>Adoption Status: {animal['status']</li>
-                            <li>Waiting for a home since: {animal['published_at']}</li>
-                    </div>
-                    <div class="col border type">
-                        <h6>Shelter Information:</h6>
-                            <li>Adoption Status: {contact['status']</li>
-                            <li>Location: {address}</li>
-                            <div class="text-center type">
-                                <button type="submit" href="#" class="btn btn-primary type">Contact Shelter</button>
-                                <button type="submit" href="#" class="btn btn-primary type">See Shelter Details</button>
-                            </div>    
-                    </div>
-                    
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <br><br>
+        </div>
+        <div class="row">
+            <div class="col-md-6 border">
+                <div class="col border type">
+                    <h2>{i.name}</h2>
+                    <h6>{i.contact.address.city}, {i.contact.address.city.state}</h6>
                 </div>
-                <div class="col-md-6 border">
-                    <div class="type text-center">
-                        <button type="submit" href="#" class="btn btn-info type">Ask About Me</button>
-                        <button type="submit" href="#" class="btn btn-outline-info type">Add Me to Your Favorites</button>
+                <div class="col border type">
+                    <h6> A {i.breeds.primary} - {i.breeds.secondary} Mix</h6>
+                </div>
+                <div class="col border type">
+                    <h6> {i.age} | {i.size} | {i.gender} </h6>
+                </div>
+                <div class="col border type">
+                    <h6>{i.color}</h6>
+                    <p>{i.description}</p>
+                </div>
+                <div class="col border type">
+                    <h6>My Info:</h6>
+                        <li>{for item in i.attributes.items}</li>
+                        <li>{for item in i.environment.items}</li>
+                </div>
+                <div class="col border type">
+                    <h6>Adoption Info:</h6>
+                        <li>Adoption Status: {i.status}</li>
+                        <li>Waiting for a home since: {i.published_at}</li>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <br>
                     </div>
-                    <div>
-                        { for photo['primary' in photo['primary' }
-                            <li>{ photo['primary' }</li>
-                            <img src="../static/adopt/images/black-and-white-dog-1938126.jpg" alt="Picture of {animal['name']}" width="550">
-                            {if additional photos}
-                                <div class="row">
-                                    <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
-                                    <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
-                                    <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
-                                </div>
-                            { empty }
-                            <div class="text-center">
-                                <img src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="No photo available for {animal{'name'}}"></li>
-                                <button type="submit" href="#" class="btn btn-primary type">Request Photos of {animal['name']|title}</button>
+                    <div class="col-sm-8">
+                        <br><br>
+                        <div class="card text-dark border-primary mb-3 text-center">
+                            <br>
+                            <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
+                            <div class="card-body">
+                                <h5 class="card-title">SHELTER NAME</h5>
+                                <p class="card-text">Location: {address}</p>
+                                <p class="card-text">Telephone: {ph#}</p>
+                                <a href="#" class="btn btn-primary">Shelter Details & Contact</a>
                             </div>
-                        { endfor }
+                        </div>
                     </div>
                 </div>
-            </div>         
+            </div>
+            <div class="col-md-6 border">
+                <div class="type text-center">
+                    <button type="submit" href="#" class="btn btn-info type">Ask About Me</button>
+                    <button type="submit" href="#" class="btn btn-outline-info type">Add Me to Your Favorites</button>
+                </div>
+                <div>
+                    { for photo['primary' in photo['primary' }
+                        <li>{ i.photos.0.medium }</li>
+                        <img src="../static/adopt/images/black-and-white-dog-1938126.jpg" alt="Picture of {animal['name']}" width="550">
+                        {if additional photos}
+                            <div class="row">
+                                <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
+                                <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
+                                <img class="img-thumbnail" src="../static/adopt/images/adorable-blur-breed-close-up-406014_small.jpeg" alt="" width=185>
+                            </div>
+                        { empty }
+                        <div class="text-center">
+                            <img src="../static/adopt/images/grey_no_photo.png" alt="No photo available for {animal{'name'}}" width="550" class="img-rel">
+                            <div class="centered">Looks like we missed picture day...</div>
+                            <button type="submit" href="#" class="btn btn-primary type">Request Photos of {i.name}</button>
+                        </div>
+                    { endfor }
+                </div>
+            </div>
+        </div> 
+    </div>        
 
 {% endblock %}

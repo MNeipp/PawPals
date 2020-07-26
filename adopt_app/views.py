@@ -1,4 +1,5 @@
-from django.shortcuts import render
+
+from django.shortcuts import render, redirect
 import json
 from django.views.decorators.csrf import csrf_exempt
 
@@ -20,7 +21,7 @@ def search(request):
 
 
 def search_query(request):
-    pass
+    return redirect('adopt/search.html)')
 
 
 def pet_detail(request, id):
