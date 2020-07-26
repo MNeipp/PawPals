@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -7,9 +9,14 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'adopt/index.html')
 
-
+@csrf_exempt
 def search(request):
-    return render(request, 'adopt/search.html')
+    dogs = request.body.decode("utf-8")
+    dogs = json.loads(dogs)
+    context ={
+        "test":dogs
+    }
+    return render(request, 'adopt/search.html', context)
 
 
 def search_query(request):
@@ -19,8 +26,8 @@ def search_query(request):
 def pet_detail(request, id):
     return render(request, 'adopt/pet_detail.html')
 
-
 def shelters(request):
+
     return render(request, 'adopt/shelters.html')
 
 
