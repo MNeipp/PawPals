@@ -11,12 +11,15 @@ def index(request):
 
 @csrf_exempt
 def search(request):
-    dogs = request.body.decode("utf-8")
-    dogs = json.loads(dogs)
-    context ={
-        "test":dogs
-    }
-    return render(request, 'adopt/search.html', context)
+    if request.method == "POST":
+        dogs = request.body.decode("utf-8")
+        dogs = json.loads(dogs)
+        context ={
+            "dogs":dogs
+        }
+        return render(request, 'adopt/search.html',context)
+    else:
+        return render(request, 'adopt/search.html')
 
 
 def search_query(request):
