@@ -14,3 +14,20 @@
     background-color: white;
     opacity: 0.2;
 }
+
+.dog-card {
+    display: inline-block;
+}
+
+/* .img-rel {
+    position: relative;
+} */
+
+/* .over-img {
+    font-size: 24pt;
+    height: 5px;
+    position: absolute;
+    top: 5%;
+    left: 80%;
+} */
+
