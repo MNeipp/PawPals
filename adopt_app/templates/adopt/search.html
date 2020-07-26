@@ -127,88 +127,22 @@
             <div class="container">
 
                 <div class="row">
+                    {% for dog in dogs %}
                     <div class="col-sm-4">
                         <div class="card text-center">
-                            <img class="card-img-top" src="../static/adopt/images/sample-img.jpeg" alt="Card image cap">
+                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="Card image cap">
                             <div class="card-body">
-                                <h5 class="card-title">NAME</h5>
-                                <p class="card-text">age | prim-breed</p>
-                                <p class="card-text">location</p>
-                                <a href="#" class="btn btn-primary">Meet NAME</a>
+                                <h5 class="card-title">{{dog.name|upper}}</h5>
+                                <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>
+                                <p class="card-text">{{dog.contact.address.city}}</p>
+                                <a href="{% url 'pet_detail' dog.id %} " class="btn btn-primary">Meet {{dog.name|upper}}</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="card text-center">
-                            <img class="card-img-top" src="../static/adopt/images/sample-img.jpeg" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">NAME</h5>
-                                <p class="card-text">age | prim-breed</p>
-                                <p class="card-text">location</p>
-                                <a href="#" class="btn btn-primary">Meet NAME</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="card text-center">
-                            <img class="card-img-top" src="../static/adopt/images/sample-img.jpeg" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">NAME</h5>
-                                <p class="card-text">age | prim-breed</p>
-                                <p class="card-text">location/distance away</p>
-                                <a href="/pet_detail/1" class="btn btn-primary">Meet NAME</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="card text-center">
-                            <img class="card-img-top" src="../static/adopt/images/sample-img.jpeg" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">NAME</h5>
-                                <p class="card-text">age | prim-breed</p>
-                                <p class="card-text">location/distance away</p>
-                                <a href="/pet_detail/1" class="btn btn-primary">Meet NAME</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="card text-center">
-                            <img class="card-img-top" src="../static/adopt/images/sample-img.jpeg" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">NAME</h5>
-                                <p class="card-text">age | prim-breed</p>
-                                <p class="card-text">location/distance away</p>
-                                <a href="/pet_detail/1" class="btn btn-primary">Meet NAME</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="card text-center">
-                            <img class="card-img-top" src="../static/adopt/images/sample-img.jpeg" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">NAME</h5>
-                                <p class="card-text">age | prim-breed</p>
-                                <p class="card-text">location/distance away</p>
-                                <a href="/pet_detail/1" class="btn btn-primary">Meet NAME</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>       
+                    {% endfor %}
+                </div>    
 
 
-                {% for i in test.animals %}
-                <div class="col-sm-4">
-                    <div class="card text-center">
-                        <img class="card-img-top" src="{{i.photos.0.medium}}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">{{i.name|upper}}</h5>
-                            <p class="card-text">{{i.age}} | {{i.breeds.primary}}</p>
-                            <p class="card-text">{{i.contact.address.city}}</p>
-                            <a href="{% url 'pet_detail' %} / {{i.id}}" class="btn btn-primary">Meet NAME</a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
 
             </div>
         </div>

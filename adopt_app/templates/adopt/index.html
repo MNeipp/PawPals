@@ -124,7 +124,7 @@
             console.log(response['data']['animals'])
             $.post({
                 data:JSON.stringify(response['data']['animals']),
-                url: 'search',
+                url: 'search/',
                 success: function(serverresponse){
                     $('html').html(serverresponse)
                 }
