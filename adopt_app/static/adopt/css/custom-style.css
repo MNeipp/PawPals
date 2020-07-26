@@ -14,3 +14,7 @@
     background-color: white;
     opacity: 0.2;
 }
+
+.dog-card {
+    display: inline-block;
+}
