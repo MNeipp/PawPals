@@ -18,9 +18,17 @@
     display: inline-block;
 }
 
-/* .img-rel {
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+.img-rel {
     position: relative;
-} */
+}
 
 /* .over-img {
     font-size: 24pt;

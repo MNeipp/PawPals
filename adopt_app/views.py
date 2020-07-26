@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 # Create your views here.
@@ -13,7 +13,7 @@ def search(request):
 
 
 def search_query(request):
-    pass
+    return redirect('adopt/search.html)')
 
 
 def pet_detail(request, id):
