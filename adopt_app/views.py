@@ -1,20 +1,32 @@
 from django.shortcuts import render, redirect
 import json
 from django.views.decorators.csrf import csrf_exempt
+import petpy
+
+pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 
 
 # Create your views here.
 
 
 def index(request):
-    return render(request, 'adopt/index.html')
+    context ={
+        "breeds":pf.breeds(types=['dog'])
+    }
+    return render(request, 'adopt/index.html', context)
 
 
-@csrf_exempt
+
 def search(request):
     if request.method == "POST":
-        dogs = request.body.decode("utf-8")
-        dogs = json.loads(dogs)
+        if request.POST['age'] == '' and request.POST['size'] == '':
+            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], breed=request.POST['breed'])
+        elif request.POST['age'] == '':
+            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], breed=request.POST['breed'])
+        elif request.POST['size'] == '':
+             dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], age=request.POST['age'], breed=request.POST['breed'])
+        else:
+            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], age=request.POST['age'], breed=request.POST['breed'])
         context = {
             'dogs': dogs
         }
