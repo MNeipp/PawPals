@@ -99,9 +99,9 @@
 <script>
     $(document).ready(function(){
 
-        // SEARCH FILTERS ON 'search'
-        $(this).click(function(){
-            $('.dropdown-menu').addClass('.show')
+        // dropdown toggler on menu
+        $('.dropdown').click(function(){
+            $(this).children('.dropdown-menu').toggle();
         });
     })
 
