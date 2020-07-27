@@ -8,6 +8,6 @@ urlpatterns = [
     path('search/query', adopt_views.search_query, name="query"),
     path('pets/<int:dog_id>', adopt_views.pet_detail, name="pet_detail"),
     path('shelters', adopt_views.shelters, name="shelters"),
-    path('shelters/<int:shelter_id>', adopt_views.shelter_detail, name="shelter_detail"),
+    path('shelters/<str:shelter_id>', adopt_views.shelter_detail, name="shelter_detail"),
     path('about/', adopt_views.about, name="about")
 ]

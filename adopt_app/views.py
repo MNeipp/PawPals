@@ -29,7 +29,7 @@ def search(request):
         else:
             dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], age=request.POST['age'], breed=request.POST['breed'], pages=None)
         context = {
-            'dogs': dogs,
+            'dogs': dogs['animals'],
             'breeds':pf.breeds(types=['dog'])
         }
         return render(request, 'adopt/search.html',context)
@@ -49,7 +49,7 @@ def pet_detail(request, dog_id):
     dog = pf.animals(animal_id=dog_id)
     context={
         "dog": dog,
-        "organization": pf.organizations(organization_id=dog['animals']['organization_id']),
+        "organization": pf.organizations(organization_id=dog['animals']['organization_id'])['organizations'],
         "date": datetime.strptime(dog['animals']['published_at'], '%Y-%m-%dT%H:%M:%S%z').date()
     }
 
@@ -60,8 +60,14 @@ def shelters(request):
     return render(request, 'adopt/shelters.html')
 
 
-def shelter_detail(request, id):
-    return render(request, 'adopt/shelter_detail.html')
+def shelter_detail(request, shelter_id):
+    organization = pf.organizations(organization_id = shelter_id)
+    context={
+        "organization": organization['organizations'],
+        "dogs": pf.animals(organization_id=shelter_id,pages=None, animal_type='dog')['animals'],
+        'breeds':pf.breeds(types=['dog']),
+    }
+    return render(request, 'adopt/shelter_detail.html', context)
 
 
 def about(request):
