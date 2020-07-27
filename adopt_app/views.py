@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 import json
 from django.views.decorators.csrf import csrf_exempt
 import petpy
+from datetime import datetime
 
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 
@@ -45,8 +46,11 @@ def search_query(request):
 
 
 def pet_detail(request, dog_id):
+    dog = pf.animals(animal_id=dog_id)
     context={
-        "dog":pf.animals(animal_id=dog_id)
+        "dog": dog,
+        "organization": pf.organizations(organization_id=dog['animals']['organization_id']),
+        "date": datetime.strptime(dog['animals']['published_at'], '%Y-%m-%dT%H:%M:%S%z').date()
     }
 
     return render(request, 'adopt/pet_detail.html', context)
