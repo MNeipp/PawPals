@@ -6,7 +6,6 @@
     <a class="nav-link" href="#"></a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item nav-link">{{dogs.animals | length}} Dogs</li>
             <li class="nav-item dropdown" note="append class .show">
                 <select name="distance" class="custom-select" id="distance" form="dog-form">
                     <option selected="" value="">Distance</option>
@@ -124,7 +123,7 @@
         </div>
         <div class="col-9 border">
             <br>
-                <h4 class="text-center">Results</h4>
+                <h4 class="text-center">{{dogs.animals | length}} Dogs Found</h4>
                 <br>
             <div class="container">
 
@@ -141,8 +140,6 @@
                             </div>
                         </div>
                     </div>
-                    {% empty %}
-                    <h2>NO DOGGOS FOUND!!! :(</h2>
                 {% endfor %}
                 </div>
 
