@@ -1,7 +1,6 @@
 {% extends 'adopt/base3.html' %}}
 
-{% block content %}}
-
+{% block content %}
     <nav class="navbar navbar-expand-lg navbar-light bg-info">
         <a class="nav-link" href="#"></a>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -70,11 +69,16 @@
                             <br>
                             <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
                             <div class="card-body">
-                                <h5 class="card-title">{{organization.organizations.name|upper}}</h5>
-                                <p class="card-text">Location: {{organization.organizations.address1}}</p>
-                                <p class="card-text">Telephone: {{organization.organizations.phone}}</p>
-                                <p class="card-text">E-mail: {{organization.organizations.email}}</p>
-                                <a href="#" class="btn btn-primary">Shelter Details & Contact</a>
+                                <h5 class="card-title">{{organization.name|upper}}</h5>
+                                {% if organization.address.address1 == None %}
+                                <p class="card-text">Telephone: {{organization.phone}}</p>
+                                <p class="card-text">E-mail: {{organization.email}}</p>
+                                {% else %}
+                                <p class="card-text">Location: {{organization.address.address1}}</p>
+                                <p class="card-text">Telephone: {{organization.phone}}</p>
+                                <p class="card-text">E-mail: {{organization.email}}</p>
+                                {% endif %}
+                                <a href="{% url 'shelter_detail' organization.id %}" class="btn btn-primary">Shelter Details & Contact</a>
                             </div>
                         </div>
                     </div>
@@ -82,15 +86,15 @@
             </div>
             <div class="col-md-6 border">
                 <div class="type text-center">
-                    <button type="submit" href="#" class="btn btn-info type">Ask About Me</button>
-                    <button type="submit" href="#" class="btn btn-outline-info type">Add Me to Your Favorites</button>
+                    <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
+                    <button type="submit" href="#" class="btn btn-outline-info">Add Me to Your Favorites</button>
                 </div>
                 <div>
                         <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550">
-                            <div class="row">
-                                <img class="img-thumbnail" src="{{dog.animals.photos.1.full}}" alt="" width=185>
-                                <img class="img-thumbnail" src="{{dog.animals.photos.2.full}}" alt="" width=185>
-                                <img class="img-thumbnail" src="{{dog.animals.photos.3.full}}" alt="" width=185>
+                            <div class="row d-flex justify-content-around">
+                                <img class="img-thumbnail col-4" src="{{dog.animals.photos.1.full}}" alt="">
+                                <img class="img-thumbnail col-4" src="{{dog.animals.photos.2.full}}" alt="">
+                                <img class="img-thumbnail col-4" src="{{dog.animals.photos.3.full}}" alt="">
                             </div>
                 </div>
             </div>

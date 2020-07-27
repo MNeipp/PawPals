@@ -6,7 +6,7 @@
     <a class="nav-link" href="#"></a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item dropdown" note="append class .show">
+            <li class="nav-item dropdown" note="append">
                 <select name="distance" class="custom-select" id="distance" form="dog-form">
                     <option selected="" value="">Distance</option>
                     <option value="5">5 miles from</option>
@@ -123,13 +123,13 @@
         </div>
         <div class="col-9 border">
             <br>
-                <h4 class="text-center">{{dogs.animals | length}} Dogs Found</h4>
+                <h4 class="text-center">{{dogs | length}} Dogs Found</h4>
                 <br>
             <div class="container">
 
                 <div class="row">
-                {% for dog in dogs.animals %}
-                    <div class="col-sm-4">
+                {% for dog in dogs %}
+                    <div class="col-sm-4 mb-2">
                         <div class="card text-center">
                             <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="Card image cap">
                             <div class="card-body">
