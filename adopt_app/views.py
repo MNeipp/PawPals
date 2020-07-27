@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 import json
 from django.views.decorators.csrf import csrf_exempt
 import petpy
@@ -11,7 +11,7 @@ pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', s
 
 def index(request):
     context ={
-        "breeds":pf.breeds(types=['dog'])
+        'breeds':pf.breeds(types=['dog'])
     }
     return render(request, 'adopt/index.html', context)
 
@@ -20,28 +20,36 @@ def index(request):
 def search(request):
     if request.method == "POST":
         if request.POST['age'] == '' and request.POST['size'] == '':
-            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], breed=request.POST['breed'])
+            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], breed=request.POST['breed'], pages=None)
         elif request.POST['age'] == '':
-            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], breed=request.POST['breed'])
+            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], breed=request.POST['breed'], pages=None)
         elif request.POST['size'] == '':
-             dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], age=request.POST['age'], breed=request.POST['breed'])
+             dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], age=request.POST['age'], breed=request.POST['breed'], pages=None)
         else:
-            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], age=request.POST['age'], breed=request.POST['breed'])
+            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], age=request.POST['age'], breed=request.POST['breed'], pages=None)
         context = {
-            'dogs': dogs
+            'dogs': dogs,
+            'breeds':pf.breeds(types=['dog'])
         }
         return render(request, 'adopt/search.html',context)
     else:
-        return render(request, 'adopt/search.html')
+        context ={
+            'breeds':pf.breeds(types=['dog'])
+        }
+        return render(request, 'adopt/search.html', context)
 
 
 def search_query(request):
+    print(request.POST)
+    return redirect(reverse('search'))
 
-    return redirect('adopt/search.html)')
 
+def pet_detail(request, dog_id):
+    context={
+        "dog":pf.animals(animal_id=dog_id)
+    }
 
-def pet_detail(request, id):
-    return render(request, 'adopt/pet_detail.html')
+    return render(request, 'adopt/pet_detail.html', context)
 
 
 def shelters(request):
