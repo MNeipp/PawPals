@@ -16,8 +16,8 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Sort By</a>
                         <div class="dropdown-menu">
                         <a class="dropdown-item" href="#">Alphabetical</a>
-                        <a class="dropdown-item" href="#">Distance: Nearest</a>
-                        <a class="dropdown-item" href="#">Distance: Furthest</a>
+                        <a class="dropdown-item" href="{% url 'shelters' %}?{{path}}&sort=distance">Distance: Nearest</a>
+                        <a class="dropdown-item" href="{% url 'shelters' %}?{{path}}&sort=-distance">Distance: Furthest</a>
                     </li>
                 </ul>
                 <a class="nav-link" href="#"></a>
