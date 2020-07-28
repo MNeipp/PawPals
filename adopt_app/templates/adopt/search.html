@@ -131,7 +131,11 @@
                 {% for dog in dogs %}
                     <div class="col-sm-4 mb-2">
                         <div class="card text-center">
-                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="Card image cap">
+                            {% if not dog.photos.0.medium %}
+                            <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap">
+                            {% else %}
+                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}">
+                            {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{dog.name|upper}}</h5>
                                 <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>
