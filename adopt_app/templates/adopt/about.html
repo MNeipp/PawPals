@@ -1,7 +1,78 @@
-{% extends 'adopt/base.html' %}
+{% extends 'adopt/base2.html' %}
 
 {% block content %}
 
-    <p>insert about page content here</p>
+<div class="container-fluid" style="background-image: url('/static/adopt/images/white-dog-terrier-jumping-near-grass-field-during-daytime-159692_crop.jpeg'); background-size:cover; background-position: center center; min-height:1027px">
+
+    <nav class="navbar navbar-expand-lg navbar-white">
+        <a class="navbar-brand" href="{% url 'home' %}">PawPals</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'search' %}">Find a Dog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shelters' %}">Shelters</a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                {% if logged_user %}
+                <a class="nav-link" href="{% url 'user_profile' %}">Profile</a>
+                <a class="nav-link" href="{% url 'favorites' logged_user.id%}">Favorites</a>
+
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid text-center">
+
+        <div class="col-md-2"></div>
+        <div class="col-md-6 text-right">
+            <h2 class="white">Check Us Out</h2>
+            <div class="row">
+                <br><br>
+                <div>
+                    <h4>Hey! We're Mason and Monty...</h4>
+                    <h5 class="white">...the team behind PawPals. We're soon to be grads of Coding Dojo and we created this site because we knew that the new futures we're building for ourselves needed to include our 4-legged friends.</h5>
+                </div>
+                <br><br>
+                <div>
+                    <h5>To create our doggie adoption site, we integrated with PetFinderAPI to bring you dogs who are looking for homes across the USA. Styling brought to you by Bootstrap4 and some really great stock images&mdash; courtesty of Pexels.com!</h5>
+                </div>
+                <br><br>
+                <div>
+                    <h5 class="white">We hope you enjoyed your visit, and that you'll spread the word about PawPals to your friends and community. We'd love to help find forever-homes for each and every one of these lovable pups!</h5>
+                </div>
+            </div>
+        </div>
+    
+        <div class="spec-height text-right">
+            <br>
+            <div class="col-6">
+                <img class="round" src="/static/adopt/images/monty.png" alt="">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p class="white text-right">Just like PawPals, we are a constant work in progress :)</p>
+        </div>
+    </div>
+</div>    
+        
 
 {% endblock %}
