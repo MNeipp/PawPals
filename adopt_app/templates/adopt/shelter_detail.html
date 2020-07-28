@@ -56,8 +56,12 @@
                         <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
                         <div class="card-body">
                             <h5 class="card-title">{{organization.name}}</h5>
+                            {% if organization.address.address1 == None %}
+                            {{empty}}
+                            {% else %}
                             <p class="card-text">Location: {{organization.address.address1}}</p>
-                            <p class="card-text">{{organization.address.city}},{{organization.address.state}}</p>
+                            {% endif %}
+                            <p class="card-text">{{organization.address.city | title}},{{organization.address.state}}</p>
                             <p><a href="#" class="card-text">Telephone: {{organization.phone}}</a></p>
                             <p><a href="#" class="card-text">Email: {{organization.email}}</a></p>
                         </div>
@@ -150,10 +154,10 @@
                         <div class="card text-center">
                             <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="Card image cap">
                             <div class="card-body">
-                                <h5 class="card-title">{{dog.name|upper}}</h5>
+                                <h5 class="card-title">{{dog.name|title}}</h5>
                                 <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>
-                                <p class="card-text">{{dog.contact.address.city}}</p>
-                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">Meet {{dog.name|upper}}</a>
+                                <p class="card-text">{{dog.contact.address.city | title}}</p>
+                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">MEET {{dog.name|upper}}</a>
                             </div>
                         </div>
                     </div>
