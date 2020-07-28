@@ -3,6 +3,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 import petpy
 from datetime import datetime
+from django.core.paginator import Paginator
 
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 
@@ -104,20 +105,26 @@ def pet_detail(request, dog_id):
 
 
 def shelters(request):
-    if request.method == "POST":
-        if 'city' in request.POST and 'state' in request.POST:
-            location = f"{request.POST['city']}, {request.POST['state']}"
-        if 'location' in request.POST:
-            location = request.POST['location']
-        if request.POST['name'] != '':
-            name = request.POST['name']
-            context={
-                "organizations": pf.organizations(pages=None, name=name)['organizations']
-            }
-        else:
-            context={
-                "organizations": pf.organizations(location=location, pages=None)['organizations']
-            }           
+    if 'name' in request.GET and request.GET['name'] !='':
+        name = request.GET['name']
+        context={
+            "organizations": pf.organizations(pages=None, name=name)['organizations']
+        }
+        return render(request,'adopt/shelters.html', context)
+    elif 'city' in request.GET and 'state' in request.GET:
+        location = f"{request.GET['city']}, {request.GET['state']}"
+        if request.GET['zip'] != '':
+            location = request.GET['zip']
+        distance = request.GET['distance']
+        organizations = Paginator(pf.organizations(location=location, distance=distance, pages=None)['organizations'],5)
+        page = request.GET.get('page', 1)
+        path = ''
+        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' ])
+        context={
+            "organizations": organizations.page(page),
+            "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
+            "path":path
+        }           
         return render(request,'adopt/shelters.html', context)
     else:
         return render(request, 'adopt/shelters.html')

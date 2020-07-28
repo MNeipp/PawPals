@@ -29,14 +29,11 @@
     </div>
 </nav>
 
-{{organizations}}
-
         <div class="container">
             <br>
             <h4 class="text-center">Search For Shelters</h4>
             <br>
-            <form action="{% url 'shelters' %}" method="POST">
-                {% csrf_token %}
+            <form action="{% url 'shelters' %}" method="GET">
                 <div class="row">
                     <div class="form-col col-md-7">
                         <h5>BY LOCATION</h5>
@@ -104,12 +101,12 @@
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="inputZip">Zip</label>
-                                <input type="text" class="form-control" id="inputZip" placeholder="30311" name="location">
+                                <input type="text" class="form-control" id="inputZip" placeholder="30311" name="zip">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="inputZip">Distance</label>
                                 <select id="distance" name="distance" class="form-control">
-                                    <option selected="" value="">Within...</option>
+                                    <option selected="" value="5">Within...</option>
                                     <option value="5">5 miles</option>
                                     <option value="10">10 miles</option>
                                     <option value="25">25 miles</option>
@@ -142,22 +139,22 @@
                             <br>
                             <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
                             <div class="card-body">
-                                <h5 class="card-title card_name">name</h5>
-                                {% if organization.address.address1 == None %}
-                                    <p>Location: <a href="#" class="card-text">{{organization.address.city}}, {{organization.address.state}}</a></p>
+                                <h5 class="card-title card_name">{{closest.name}}</h5>
+                                {% if closest.address.address1 == None %}
+                                    <p>Location: <a href="#" class="card-text">{{closest.address.city}}, {{closest.address.state}}</a></p>
                                 {% else %}
-                                <p>Location: <a href="#" class="card-text">{{organization.address.address1}}
-                                    <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
+                                <p>Location: <a href="#" class="card-text">{{closest.address.address1}}
+                                    <br> {{closest.address.city}}, {{closest.address.state}}</a></p>
                                 {% endif %}
-                                {% if organization.phone == None %}
-                                <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
+                                {% if closest.phone == None %}
+                                <p>Phone: <span class="card-text text-primary">Not Listed</span></p>
                                 {% else %}
-                                <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                                <p>Phone: <span class="card-text text-primary">{{closest.phone}}</span></p>
                                 {% endif %}
-                                {% if organization.email == None %}
+                                {% if closest.email == None %}
                                 <p>Email: <a href="#" class="card-text">Not Listed</a></p>
                                 {% else %}
-                                <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
+                                <p>Email: <a href="#" class="card-text">{{closest.email}}</a></p>
                                 {% endif %}
                             </div>
                         </div>
@@ -173,34 +170,39 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for organization in organizations %}
                                 <tr>
-                                    <th class="shel_name" scope="row">A</th>
-                                    <td><a href="">See Available Pets</a></td>
+                                    <th class="shel_name" scope="row">{{organization.name}}</th>
+                                    <td><a href="{% url 'shelter_detail' organization.id %}">See Available Pets</a></td>
                                     <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
-                                    <td><a href="">{{organization.phone}}</a></td>
-                                </tr>
-                                <tr>
-                                    <th class="shel_name" scope="row">B</th>
-                                    <td><a href="">See Available Pets</a></td>
-                                    <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
-                                    <td><a href="">{{organization.phone}}</a></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">C</th>
-                                    <td><a href="">See Available Pets</a></td>
-                                    <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
-                                    <td><a href="">{{organization.phone}}</a></td>
-                                </tr>
-                                {% for i in test.animals %}
-                                <tr>
-                                    <th scope="row">{{organization.name}}</th>
-                                    <td><a href="">See Available Pets</a></td>
-                                    <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
-                                    <td><a href="">{{organization.phone}}</a></td>
+                                    <td><p class="text-primary">{{organization.phone}}</p></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table> 
+                        <div class="row d-flex justify-content-center">
+                            {% if organizations.has_other_pages%}
+                            <ul class="pagination">
+                                {% if organizations.has_previous %}
+                                <li class='page-item'><a href="{% url 'shelters' %}?{{path}}&page={{organizations.previous_page_number}}" class='page-link'>&laquo;</a></li>
+                                {% else %}
+                                <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                                {% endif %}
+                                {% for i in organizations.paginator.page_range %}
+                                {% if organizations.number == i %}
+                                <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                <li class="page-item"><a href="{% url 'shelters' %}?{{path}}&page={{ i }}" class='page-link'>{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+                                {% if organizations.has_next %}
+                                <li class="page-item"><a href="{% url 'shelters' %}?{{path}}&page={{ organizations.next_page_number }}" class="page-link">&raquo;</a></li>
+                                {% else %}
+                                <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
