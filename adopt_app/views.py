@@ -20,14 +20,51 @@ def index(request):
 
 def search(request):
     if request.method == "POST":
-        if request.POST['age'] == '' and request.POST['size'] == '':
-            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], breed=request.POST['breed'], pages=None)
-        elif request.POST['age'] == '':
-            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], breed=request.POST['breed'], pages=None)
-        elif request.POST['size'] == '':
-             dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], age=request.POST['age'], breed=request.POST['breed'], pages=None)
+        if request.POST['age'] == '':
+            age = None
         else:
-            dogs = pf.animals(animal_type='dog', status = 'adoptable', location=request.POST['location'], distance=request.POST['distance'], size=request.POST['size'], age=request.POST['age'], breed=request.POST['breed'], pages=None)
+            age = request.POST['age']
+        if request.POST['size'] == '':
+            size = None
+        else:
+            size = request.POST['size']
+        if request.POST['location'] == '':
+            location = None
+        else:
+            location = request.POST['location']
+        if request.POST['distance'] == '':
+            distance = None
+        else:
+            distance = request.POST['distance']
+        if request.POST['breed'] == '':
+            breed = None
+        else:
+            breed = request.POST['breed']
+        if 'gender' not in request.POST:
+            gender = None
+        elif request.POST['gender'] == '':
+            gender=None
+        else:
+            gender = request.POST['gender']
+        if 'gets_along' not in request.POST:
+            good_with_children = None
+            good_with_dogs = None
+            good_with_cats = None
+        elif request.POST['gets_along'] == 'kids':
+            good_with_children = True
+            good_with_dogs = None
+            good_with_cats = None
+        elif request.POST['gets_along'] == 'dogs':
+            good_with_children = None
+            good_with_dogs = True
+            good_with_cats = None
+        elif request.POST['gets_along'] == 'cats':
+            good_with_children = None
+            good_with_dogs = None
+            good_with_cats = True
+        
+
+        dogs = pf.animals(animal_type='dog', status = 'adoptable', location=location, distance=distance, size=size, age=age, breed=breed, gender=gender, pages=None, good_with_children=good_with_children, good_with_cats=good_with_cats, good_with_dogs=good_with_dogs)
         context = {
             'dogs': dogs['animals'],
             'breeds':pf.breeds(types=['dog'])
