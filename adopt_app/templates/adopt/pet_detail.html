@@ -71,12 +71,20 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{organization.name|upper}}</h5>
                                 {% if organization.address.address1 == None %}
-                                <p class="card-text">Telephone: {{organization.phone}}</p>
-                                <p class="card-text">E-mail: {{organization.email}}</p>
+                                    <p>Location: <a href="#" class="card-text">{{organization.address.city}}, {{organization.address.state}}</a></p>
                                 {% else %}
-                                <p class="card-text">Location: {{organization.address.address1}}</p>
-                                <p class="card-text">Telephone: {{organization.phone}}</p>
-                                <p class="card-text">E-mail: {{organization.email}}</p>
+                                <p>Location: <a href="#" class="card-text">{{organization.address.address1}}
+                                    <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
+                                {% endif %}
+                                {% if organization.phone == None %}
+                                <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
+                                {% else %}
+                                <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                                {% endif %}
+                                {% if organization.email == None %}
+                                <p>Email: <a href="#" class="card-text">Not Listed</a></p>
+                                {% else %}
+                                <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
                                 {% endif %}
                                 <a href="{% url 'shelter_detail' organization.id %}" class="btn btn-primary">Shelter Details & Contact</a>
                             </div>
