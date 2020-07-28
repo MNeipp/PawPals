@@ -55,91 +55,29 @@
                         <br>
                         <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
                         <div class="card-body">
-                            <h5 class="card-title">{{organization.name}}</h5>
+                            <h5 class="card-title">{{organization.name|upper}}</h5>
                             {% if organization.address.address1 == None %}
-                            {{empty}}
+                                <p>Location: <a href="#" class="card-text">{{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% else %}
-                            <p class="card-text">Location: {{organization.address.address1}}</p>
+                            <p>Location: <a href="#" class="card-text">{{organization.address.address1}}
+                                <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% endif %}
-                            <p class="card-text">{{organization.address.city | title}},{{organization.address.state}}</p>
-                            <p><a href="#" class="card-text">Telephone: {{organization.phone}}</a></p>
-                            <p><a href="#" class="card-text">Email: {{organization.email}}</a></p>
+                            {% if organization.phone == None %}
+                            <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
+                            {% else %}
+                            <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                            {% endif %}
+                            {% if organization.email == None %}
+                            <p>Email: <a href="#" class="card-text">Not Listed</a></p>
+                            {% else %}
+                            <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
+                            {% endif %}
                         </div>
                         <div>
-                            map?
                         </div>
                     </div>
                 </div>
-
-                <form action="#" method="">
-                    <div class="form-group">  
-                        <p>BREED</p>
-                        <select class="custom-select" name="breed">
-                            <option value="">Pick a Breed</option>
-                            {% for breed in breeds.breeds.dog %}
-                            <option value="{{breed}}">{{breed}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p>SIZE</p>
-                        <select class="custom-select" name="size">
-                            <option selected="">Any</option>
-                            <option value="small">Small</option>
-                            <option value="medium">Medium</option>
-                            <option value="large">Large</option>
-                            <option value="xlarge">Extra Large</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p>AGE</p>
-                        <select class="custom-select" name="age">
-                            <option selected="">Any</option>
-                            <option value="baby">Puppy</option>
-                            <option value="young">Adolescent</option>
-                            <option value="adult">Adult</option>
-                            <option value="senior">Senior</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p>GENDER</p>
-                        <select name="disance" class="custom-select">
-                            <option selected="">Any</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p>GETS ALONG WITH</p>
-                        <select name="disance" class="custom-select">
-                            <option selected="">Any</option>
-                            <option value="kids">Kids</option>
-                            <option value="dogs">Dogs</option>
-                            <option value="cats">Cats</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p>DAYS ON PAWPALS</p>
-                        <select name="disance" class="custom-select">
-                            <option selected="">Any</option>
-                            <option value="kids">1</option>
-                            <option value="dogs">7</option>
-                            <option value="cats">14</option>
-                            <option value="cats">30+</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p>PET NAME</p>
-                        <input type="text" placeholder="ex. Spot" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <p>SHELTER or RESCUE</p>
-                        <input type="text" placeholder="ex. NKLA" class="form-control">
-                    </div>
-                    <div class="text-center">
-                        <input type="submit" value="SEARCH" class="btn btn-info">
-                    </div>
-                </form>
+                <h2>google map here</h2>
             </div>
         </div>
         <div class="col-9 border">
@@ -152,7 +90,11 @@
                     {% for dog in dogs %}
                     <div class="col-sm-4 mb-2">
                         <div class="card text-center">
-                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="Card image cap">
+                            {% if not dog.photos.0.medium %}
+                            <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap">
+                            {% else %}
+                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}">
+                            {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{dog.name|title}}</h5>
                                 <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>

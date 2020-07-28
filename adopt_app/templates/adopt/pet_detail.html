@@ -21,41 +21,69 @@
             <br><br>
         </div>
         <div class="row">
-            <div class="col-md-6 border">
-                <div class="col border type">
-                    <h2>{{dog.animals.name}}</h2>
+            <div class="col-md-6">
+                <div class="col type">
+                    <h1>{{dog.animals.name}}</h1>
                     <h6>{{dog.animals.contact.address.city}}, {{dog.animals.contact.address.state}}</h6>
                 </div>
-                <div class="col border type">
+                <div class="col type">
+                    <br>
+                </div>
+                <div class="col type">
                     {% if dog.animals.breeds.mixed == True and dog.animals.breeds.secondary == None%}
-                    <h6>{{dog.animals.breeds.primary}} Mix</h6>
+                    <h4>{{dog.animals.breeds.primary}} Mix</h4>
                     {% elif dog.animals.breeds.secondary == None %}
-                    <h6>{{dog.animals.breeds.primary}}</h6>
+                    <h4>{{dog.animals.breeds.primary}}</h4>
                     {% else %}
-                    <h6>{{dog.animals.breeds.primary}} | {{dog.animals.breed.secondary}} Mix</h6>
+                    <h4>{{dog.animals.breeds.primary}} | {{dog.animals.breed.secondary}} Mix</h4>
                     {% endif %}
                 </div>
-                <div class="col border type">
-                    <h6> {{dog.animals.age}} | {{dog.animals.size}} | {{dog.animals.gender}} </h6>
+                <br>
+                <div class="col type">
+                    <h6> A {{dog.animals.age}}, {{dog.animals.size}} Sized {{dog.animals.gender}} </h6>
                 </div>
-                <div class="col border type">
-                    <h6>{{dog.animals.colors.primary}}</h6>
+                <br>
+                {% if dog.animals.colors.primary %}
+                <div class="col type">
+                    <h6>Fur Color: {{dog.animals.colors.primary}}</h6>
                 </div>
-                <div class="col border type">
+                <br>
+                {% endif %}
+
+                <div class="col type">
                     <h6>My Info:</h6>
-                    {% for k,v in dog.animals.attributes.items %}
-                        {% if v == True %}
-                        <li>{{k}}</li>
+                        {% if dog.animals.attributes %}
+                            {% for k, v in dog.animals.attributes.items %}
+                                {% if v == True %}
+                                <li>{{k|title}}: Yes</li>
+                                {% elif v == None %}
+                                <li>{{k|title}}: Not listed</li>
+                                {% else %}
+                                <li>{{k|title}}: No</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
                         {% endif %}
-                    {% endfor %}
-                    {% for item in dog.animals.environment.items %}
-                        {% if v == True %}
-                        <li>{{k}}</li>
-                        {% endif %}
-                    {% endfor %}
                 </div>
-                <div class="col border type">
-                    <h6>Adoption Info:</h6>
+                <br>
+                <div class="col type">
+                    <h6>How I Am Around...</h6>    
+                        {% if dog.animals.environment %}
+                            {% for k, v in dog.animals.environment.items %}
+                                {% if v == True %}
+                                <li>{{k|title}}: Yes</li>
+                                {% elif v == None %}
+                                <li>{{k|title}}: Not listed</li>
+                                {% else %}
+                                <li>{{k|title}}: No</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                        {% endif %}
+                </div>
+                <br>
+                <div class="col type">
+                    <h6>Adoption Status:</h6>
                         <li>{{dog.animals.status|upper}}</li>
                         <li>Waiting for a home since: {{date}}</li>
                 </div>
@@ -71,12 +99,20 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{organization.name|upper}}</h5>
                                 {% if organization.address.address1 == None %}
-                                <p class="card-text">Telephone: {{organization.phone}}</p>
-                                <p class="card-text">E-mail: {{organization.email}}</p>
+                                    <p>Location: <a href="#" class="card-text">{{organization.address.city}}, {{organization.address.state}}</a></p>
                                 {% else %}
-                                <p class="card-text">Location: {{organization.address.address1}}</p>
-                                <p class="card-text">Telephone: {{organization.phone}}</p>
-                                <p class="card-text">E-mail: {{organization.email}}</p>
+                                <p>Location: <a href="#" class="card-text">{{organization.address.address1}}
+                                    <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
+                                {% endif %}
+                                {% if organization.phone == None %}
+                                <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
+                                {% else %}
+                                <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                                {% endif %}
+                                {% if organization.email == None %}
+                                <p>Email: <a href="#" class="card-text">Not Listed</a></p>
+                                {% else %}
+                                <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
                                 {% endif %}
                                 <a href="{% url 'shelter_detail' organization.id %}" class="btn btn-primary">Shelter Details & Contact</a>
                             </div>
@@ -84,18 +120,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 border">
+            <div class="col-md-6">
                 <div class="type text-center">
                     <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
                     <button type="submit" href="#" class="btn btn-outline-info">Add Me to Your Favorites</button>
                 </div>
                 <div>
-                        <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550">
-                            <div class="row d-flex justify-content-around">
-                                <img class="img-thumbnail col-4" src="{{dog.animals.photos.1.full}}" alt="">
-                                <img class="img-thumbnail col-4" src="{{dog.animals.photos.2.full}}" alt="">
-                                <img class="img-thumbnail col-4" src="{{dog.animals.photos.3.full}}" alt="">
-                            </div>
+                    <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550">
+                    <div class="row d-flex justify-content-around">
+                        {% if not dog.animals.photos.1.full %}
+                        <h5>No Additional Photos Available</h5>
+                        {% else %}
+                        <img class="img-thumbnail col-4" src="{{dog.animals.photos.1.full}}" alt="">
+                        <img class="img-thumbnail col-4" src="{{dog.animals.photos.2.full}}" alt="">
+                        <img class="img-thumbnail col-4" src="{{dog.animals.photos.3.full}}" alt="">
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div> 

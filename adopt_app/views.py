@@ -11,11 +11,10 @@ pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', s
 
 
 def index(request):
-    context ={
-        'breeds':pf.breeds(types=['dog'])
+    context = {
+        'breeds': pf.breeds(types=['dog'])
     }
     return render(request, 'adopt/index.html', context)
-
 
 
 def search(request):
@@ -67,26 +66,40 @@ def search(request):
             good_with_dogs = None
             good_with_cats = True
         
-        dogs = pf.animals(animal_type='dog', status = 'adoptable', location=location, distance=distance, size=size, age=age, breed=breed, gender=gender, pages=None, good_with_children=good_with_children, good_with_cats=good_with_cats, good_with_dogs=good_with_dogs)
+        dogs = pf.animals(
+          animal_type='dog',
+          status='adoptable',
+          location=location,
+          distance=distance,
+          size=size,
+          age=age,
+          breed=breed,
+          gender=gender,
+          pages=None,
+          good_with_children=good_with_children,
+          good_with_cats=good_with_cats,
+          good_with_dogs=good_with_dogs
+        )
+
         context = {
             'dogs': dogs['animals'],
-            'breeds':pf.breeds(types=['dog'])
+            'breeds': pf.breeds(types=['dog'])
         }
-        return render(request, 'adopt/search.html',context)
+        return render(request, 'adopt/search.html', context)
+
     else:
-        context ={
-            'breeds':pf.breeds(types=['dog'])
+        context = {
+            'breeds': pf.breeds(types=['dog'])
         }
         return render(request, 'adopt/search.html', context)
 
 def pet_detail(request, dog_id):
     dog = pf.animals(animal_id=dog_id)
-    context={
+    context = {
         "dog": dog,
         "organization": pf.organizations(organization_id=dog['animals']['organization_id'])['organizations'],
         "date": datetime.strptime(dog['animals']['published_at'], '%Y-%m-%dT%H:%M:%S%z').date()
     }
-
     return render(request, 'adopt/pet_detail.html', context)
 
 
@@ -111,11 +124,11 @@ def shelters(request):
 
 
 def shelter_detail(request, shelter_id):
-    organization = pf.organizations(organization_id = shelter_id)
-    context={
+    organization = pf.organizations(organization_id=shelter_id)
+    context = {
         "organization": organization['organizations'],
-        "dogs": pf.animals(organization_id=shelter_id,pages=None, animal_type='dog')['animals'],
-        'breeds':pf.breeds(types=['dog']),
+        "dogs": pf.animals(organization_id=shelter_id, pages=None, animal_type='dog')['animals'],
+        "breeds": pf.breeds(types=['dog']),
     }
     return render(request, 'adopt/shelter_detail.html', context)
 
