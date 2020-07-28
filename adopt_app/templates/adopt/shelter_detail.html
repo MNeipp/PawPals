@@ -96,10 +96,10 @@
                             <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}">
                             {% endif %}
                             <div class="card-body">
-                                <h5 class="card-title">{{dog.name|upper}}</h5>
+                                <h5 class="card-title">{{dog.name|title}}</h5>
                                 <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>
-                                <p class="card-text">{{dog.contact.address.city}}</p>
-                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">Meet {{dog.name|upper}}</a>
+                                <p class="card-text">{{dog.contact.address.city | title}}</p>
+                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">MEET {{dog.name|upper}}</a>
                             </div>
                         </div>
                     </div>

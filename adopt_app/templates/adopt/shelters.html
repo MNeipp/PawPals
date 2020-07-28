@@ -6,37 +6,28 @@
     <a class="nav-link" href="#"></a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item nav-link">{Results Count} Shelters</li>
-            <li class="nav-item dropdown show">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Distance</a>
-                <div id="distance" class="dropdown-menu">
-                  <a class="dropdown-item" href="#">10 miles</a>
-                  <a class="dropdown-item" href="#">25 miles</a>
-                  <a class="dropdown-item" href="#">50 miles</a>
-                  <a class="dropdown-item" href="#">100 miles</a>
-                  <a class="dropdown-item" href="#">Anywhere</a>
-              </li>
-            <li class="nav-item form-group col-4">
-                <input type="text" placeholder="Zip Code" class="form-control">
-            </li>
+
         </ul>
     </div>
 </nav>
+
+{{organizations}}
 
         <div class="container">
             <br>
             <h4 class="text-center">Search For Shelters</h4>
             <br>
-            <form>
+            <form action="{% url 'shelters' %}" method="POST">
+                {% csrf_token %}
                 <div class="row">
-                    <div class="form-col">
+                    <div class="form-col col-md-7">
                         <h5>BY LOCATION</h5>
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="inputCity">City</label>
-                                <input type="text" class="form-control" id="inputCity" placeholder="Atlanta">
+                                <input type="text" class="form-control" id="inputCity" placeholder="Atlanta" name='city'> 
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label for="inputState">State</label>
                                 <select id="state" name="state" class="form-control">
                                     <option value="" selected="selected">Select a State</option>
@@ -93,18 +84,25 @@
                                     <option value="WY">Wyoming</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="inputZip">Zip</label>
-                                <input type="text" class="form-control" id="inputZip" placeholder="30311">
+                                <input type="text" class="form-control" id="inputZip" placeholder="30311" name="location">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="inputZip">Distance</label>
+                                <input type="text" class="form-control" id="inputZip" placeholder="30311" name="distance">
                             </div>
                         </div> 
                     </div>
-                    <div class="col">
+                    <div class="col-4">
                         <h5>BY ORGANIZATION NAME</h5>
                         <div class="form-group col-md-10">
                         <label for="shelterName">Name</label>
-                        <input type="text" class="form-control" id="shelterName" placeholder="BraveDog Rescue">
+                        <input type="text" class="form-control" id="shelterName" placeholder="BraveDog Rescue" name="name">
                         </div>
+                    </div>
+                    <div class="col-1 align-self-end mb-3">
+                        <input type="submit" class="btn btn-info" value="Submit">
                     </div>
                 </div>
             </form>

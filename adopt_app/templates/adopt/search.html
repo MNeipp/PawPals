@@ -28,7 +28,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Sort By</a>
-                    <div class="dropdown-menu" style="">
+                    <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Newest</a>
                     <a class="dropdown-item" href="#">Oldest</a>
                     <a class="dropdown-item" href="#">Distance</a>
@@ -49,7 +49,7 @@
                 <br>
                 <h4 class="text-center">Filter Your Search</h4>
                 <br>
-                <form action="{% url 'query' %}" method="POST" id="dog-form">
+                <form action="{% url 'search' %}" method="POST" id="dog-form">
                     {% csrf_token %}
                     <div class="form-group">  
                         <p>BREED</p>
@@ -92,9 +92,9 @@
                         <p>GETS ALONG WITH</p>
                         <select name="gets_along" class="custom-select">
                             <option value=''>Any</option>
-                            <option value="good_with_kids=True">Kids</option>
-                            <option value="good_with_dogs=True">Dogs</option>
-                            <option value="good_with_cats=True">Cats</option>
+                            <option value="kids">Kids</option>
+                            <option value="dogs">Dogs</option>
+                            <option value="cats">Cats</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -131,16 +131,18 @@
                 {% for dog in dogs %}
                     <div class="col-sm-4 mb-2">
                         <div class="card text-center">
-                            {% if not dog.photos.0.medium %}
-                            <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap">
-                            {% else %}
-                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}">
-                            {% endif %}
+                            <div class="card-top"  style="height:350px">
+                                {% if not dog.photos.0.medium %}
+                                <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap">
+                                {% else %}
+                                <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}">
+                                {% endif %}
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">{{dog.name|upper}}</h5>
+                                <h5 class="card-title">{{dog.name|title}}</h5>
                                 <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>
-                                <p class="card-text">{{dog.contact.address.city}}</p>
-                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">Meet {{dog.name|upper}}</a>
+                                <p class="card-text">{{dog.contact.address.city|title}}</p>
+                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">MEET {{dog.name|upper}}</a>
                             </div>
                         </div>
                     </div>
@@ -152,6 +154,23 @@
     </div>
     
 </div>
+<script>
+    fixBrokenImages = function(url){
+    var img = document.getElementsByTagName('img');
+    var i=0, l=img.length;
+    for(;i<l;i++){
+        var t = img[i];
+        if(t.naturalWidth === 0){
+            //this image is broken
+            t.src = url;
+        }
+    }
+}
+
+window.onload = function() {
+    fixBrokenImages('../static/adopt/images/grey_no_photo.png');
+ }
+</script>
 
 
 
