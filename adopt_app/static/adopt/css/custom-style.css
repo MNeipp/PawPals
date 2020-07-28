@@ -38,3 +38,15 @@
     left: 80%;
 } */
 
+.white {
+    color: white !important;
+}
+
+.spec-height{
+    min-height: 600px;
+}
+
+.round {
+    border-radius: 50%;
+    height: 130px;
+}

@@ -132,7 +132,7 @@
                 </div>
             </form>
         </div>
-        <div class="col border">
+        <div class="col">
             <br><br>
             <div class="container">
 
@@ -142,7 +142,7 @@
                             <br>
                             <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
                             <div class="card-body">
-                                <h5 class="card-title">{{organization.name|upper}}</h5>
+                                <h5 class="card-title card_name">name</h5>
                                 {% if organization.address.address1 == None %}
                                     <p>Location: <a href="#" class="card-text">{{organization.address.city}}, {{organization.address.state}}</a></p>
                                 {% else %}
@@ -174,13 +174,13 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">A</th>
+                                    <th class="shel_name" scope="row">A</th>
                                     <td><a href="">See Available Pets</a></td>
                                     <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
                                     <td><a href="">{{organization.phone}}</a></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">B</th>
+                                    <th class="shel_name" scope="row">B</th>
                                     <td><a href="">See Available Pets</a></td>
                                     <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
                                     <td><a href="">{{organization.phone}}</a></td>
@@ -193,7 +193,7 @@
                                 </tr>
                                 {% for i in test.animals %}
                                 <tr>
-                                    <th scope="row">{{organization.phone}}</th>
+                                    <th scope="row">{{organization.name}}</th>
                                     <td><a href="">See Available Pets</a></td>
                                     <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
                                     <td><a href="">{{organization.phone}}</a></td>
