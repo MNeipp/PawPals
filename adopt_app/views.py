@@ -113,9 +113,12 @@ def shelters(request):
         return render(request,'adopt/shelters.html', context)
     elif 'city' in request.GET and 'state' in request.GET:
         location = f"{request.GET['city']}, {request.GET['state']}"
-        if request.GET['zip'] != '':
+        if 'zip' in request.GET and request.GET['zip'] != '':
             location = request.GET['zip']
-        distance = request.GET['distance']
+        if 'distance' in request.GET:
+            distance = request.GET['distance']
+        else: 
+            distance = 5
         organizations = Paginator(pf.organizations(location=location, distance=distance, pages=None)['organizations'],5)
         page = request.GET.get('page', 1)
         path = ''

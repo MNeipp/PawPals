@@ -174,7 +174,7 @@
                                 <tr>
                                     <th class="shel_name" scope="row">{{organization.name}}</th>
                                     <td><a href="{% url 'shelter_detail' organization.id %}">See Available Pets</a></td>
-                                    <td><a href="">{{organization.address.city}}, {{organization.address.state}}</a></td>
+                                    <td><a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}">{{organization.address.city}}, {{organization.address.state}}</a></td>
                                     <td><p class="text-primary">{{organization.phone}}</p></td>
                                 </tr>
                                 {% endfor %}
