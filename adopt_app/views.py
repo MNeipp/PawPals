@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, reverse
 import json
-from django.views.decorators.csrf import csrf_exempt
 import petpy
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator
 
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
+today = datetime.today()
 
 
 # Create your views here.
@@ -66,6 +66,10 @@ def search(request):
             good_with_children = None
             good_with_dogs = None
             good_with_cats = True
+        if 'after_date' == '':
+            after_date = None
+        else:
+            after_date = today - timedelta(days=int(request.POST['after_date']))
         
         dogs = pf.animals(
           animal_type='dog',
@@ -79,7 +83,8 @@ def search(request):
           pages=None,
           good_with_children=good_with_children,
           good_with_cats=good_with_cats,
-          good_with_dogs=good_with_dogs
+          good_with_dogs=good_with_dogs,
+          after_date = after_date
         )
 
         context = {
@@ -119,7 +124,11 @@ def shelters(request):
             distance = request.GET['distance']
         else: 
             distance = 5
-        organizations = Paginator(pf.organizations(location=location, distance=distance, pages=None)['organizations'],5)
+        if 'sort' in request.GET:
+            sort = request.GET['sort']
+        else:
+            sort = None
+        organizations = Paginator(pf.organizations(location=location, distance=distance, pages=None, sort=sort)['organizations'],5)
         page = request.GET.get('page', 1)
         path = ''
         path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' ])
