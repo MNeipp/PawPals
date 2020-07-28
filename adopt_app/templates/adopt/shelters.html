@@ -188,11 +188,11 @@
                                 {% else %}
                                 <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
                                 {% endif %}
-                                {% for i in organizations.paginator.page_range %}
-                                {% if organizations.number == i %}
-                                <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
-                                {% else %}
-                                <li class="page-item"><a href="{% url 'shelters' %}?{{path}}&page={{ i }}" class='page-link'>{{ i }}</a></li>
+                                {% for page in organizations.paginator.page_range %}
+                                {% if organizations.number == page %}
+                                <li class="active page-item"><span class="page-link">{{ page }} <span class="sr-only">(current)</span></span></li>
+                                {% elif page > organizations.number|add:'-3' and page < organizations.number|add:'3' %}
+                                <li class="page-item"><a href="{% url 'shelters' %}?{{path}}&page={{ page }}" class='page-link'>{{ page }}</a></li>
                                 {% endif %}
                                 {% endfor %}
                                 {% if organizations.has_next %}
