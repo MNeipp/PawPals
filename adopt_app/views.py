@@ -3,6 +3,7 @@ import json
 import petpy
 from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from user_app.models import User
 
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 today = datetime.today()
@@ -12,10 +13,17 @@ today = datetime.today()
 
 
 def index(request):
-    context = {
-        'breeds': pf.breeds(types=['dog'])
-    }
-    return render(request, 'adopt/index.html', context)
+    if 'user_id' in request.session:
+        context = {
+            'breeds': pf.breeds(types=['dog']),
+            'logged_user': User.objects.get(id=request.session['user_id'])
+        }
+        return render(request, 'adopt/index.html', context)
+    else:
+        context={
+            'breed': pf.breeds(types=['dog']),
+        }
+        return render(request, 'adopt/index.html', context)
 
 
 def search(request):
