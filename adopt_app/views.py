@@ -4,6 +4,7 @@ import petpy
 from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user_app.models import User
+from django.contrib import messages
 
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 today = datetime.today()
@@ -150,6 +151,12 @@ def shelters(request):
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})
         return render(request,'adopt/shelters.html', context)
     elif 'city' in request.GET and 'state' in request.GET:
+        if request.GET['city'] == '' and request.GET['state'] == '' or request.GET['zip'] == '':
+            messages.error(request, "You must enter a City and State or Zip Code", extra_tags='location')
+            context={}
+            if 'user_id' in request.session:
+                context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
+            return render(request, 'adopt/shelters.html', context)
         location = f"{request.GET['city']}, {request.GET['state']}"
         if 'zip' in request.GET and request.GET['zip'] != '':
             location = request.GET['zip']

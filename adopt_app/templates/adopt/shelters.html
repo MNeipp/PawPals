@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
             </ul>
-            <div class="navbar-nav ml-auto">
+            <div class="navbar-nav ml-auto mr-5">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Sort By</a>
@@ -19,10 +19,6 @@
                         <a class="dropdown-item" href="{% url 'shelters' %}?{{path}}&sort=-distance">Distance: Furthest</a>
                     </li>
                 </ul>
-                <a class="nav-link" href="#"></a>
-                <a class="nav-link" href="#"></a>
-                <a class="nav-link" href="#"></a>
-                <a class="nav-link" href="#"></a>
             </div>
         </div>
     </div>
@@ -35,7 +31,13 @@
             <form action="{% url 'shelters' %}" method="GET">
                 <div class="row">
                     <div class="form-col col-md-7">
-                        <h5>BY LOCATION</h5>
+                        <h5>BY LOCATION
+                            {% if messages %}
+                            {% for message in messages %}
+                            <span class='text-danger'><small><em>{{message}}</small></em></span>
+                            {% endfor %}
+                            {% endif %}
+                        </h5>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="inputCity">City</label>
