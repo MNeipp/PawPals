@@ -83,7 +83,7 @@ def search(request):
         else:
             sort = None
         
-        dogs = Paginator(pf.animals(
+        dogs = pf.animals(
           animal_type='dog',
           status='adoptable',
           location=location,
@@ -98,7 +98,9 @@ def search(request):
           good_with_dogs=good_with_dogs,
           after_date=after_date,
           sort=sort
-        )['animals'],100)
+        )
+        dog_count = len(dogs['animals'])
+        dogs = Paginator(dogs['animals'], 9)
         page = request.GET.get('page', 1)
         try:
             dogs = dogs.page(page)
@@ -111,7 +113,8 @@ def search(request):
         context={
             'dogs': dogs,
             'breeds': pf.breeds(types=['dog']),
-            'path':path
+            'path':path,
+            'dog_count': dog_count
         }
         if 'user_id' in request.session:
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
