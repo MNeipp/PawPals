@@ -35,7 +35,7 @@ def register(request):
         errors = User.objects.basic_validator(request.POST)
         if len(errors) > 0:
             for key, value in errors.items():
-                messages.error(request,value, extra_tags=key)
+                messages.error(request, value, extra_tags=key)
             return redirect(reverse('register'))
         else:
             first_name = request.POST['first_name']
@@ -43,7 +43,12 @@ def register(request):
             email = request.POST['email']
             password = request.POST['password']
             pswd_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-            user = User.objects.create(first_name=first_name, last_name = last_name, email=email, password=pswd_hash)
+            user = User.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=pswd_hash
+                )
             if "user_id" not in request.session:
                 request.session['user_id'] = user.id
             return redirect(reverse("home"))
@@ -110,4 +115,4 @@ def update_password(request):
 
 def favorites(request, id):
     # return user's favorites
-    pass
+    return render(request, 'favorites.html')
