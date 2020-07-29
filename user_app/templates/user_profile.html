@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#efefef">
             <div class="container-fluid">
-                <a href="{% url '' %}"><img src="{% static 'img/vocalist-logo.png' %}" class="navbar-brand"
+                <a href=""><img src="" class="navbar-brand"
                         height=150px width=400px></img></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                     aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -134,36 +134,26 @@
             <div class="row d-flex justify-content-start">
                 <div class="col-md-3">
                     <ul class="list-unstyled mt-2">
-                        <li><a href="{% url 'index' %}" class="text-light"><small>Index</small></a></li>
+                        <li><a href="{% url 'home' %}" class="text-light"><small>Index</small></a></li>
                         <li><a href="{% url 'about' %}" class="text-light"><small>About</small></a></li>
-                        <li><a href="{% url 'terms_of_use' %}" class="text-light"><small>Terms of Use</small></a></li>
-                        <li><a href="{% url 'privacy_policy' %}" class="text-light"><small>Privacy Policy</small></a></li>
+
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="list-unstyled mt-2">
-                        <li><a href="{% url 'list' %}" class="text-light"><small>The List</small></a></li>
+
                         <li><a href="{% url 'login' %}" class="text-light"><small>Log In</small></a></li>
                         <li><a href="{% url 'register' %}" class="text-light"><small>Register</small></a></li>
-                        <li><a href="{% url 'contribute' %}" class="text-light"><small>Contribute</small></a></li>
+                        <li><a href="" class="text-light"><small>Contribute</small></a></li>
                     </ul>
                 </div>
-                {% if logged_user.user_level == 9%}
-                <div class="col-md-3">
-                    <ul class="list-unstyled mt-2">
-                        <li><a href="{% url 'requests' %}" class="text-light"><small>YAP Requests</small></a></li>
-                        <li><a href="{% url 'all_reports' %}" class="text-light"><small>Review Reports</small></a></li>
-                        <li><a href="{% url 'all_corrections' %}" class="text-light"><small>Correction Reports</small></a></li>
-                    </ul>
-                </div>
-                {% endif %}
             </div>
             <div class="row">
                 <hr class="border border-light w-100 mb-0 mt-0" >
             </div>
             <div class="row d-flex justify-content-start">
                 <div class="col-md-2 mb-2 mt-2">
-                    <small class="text-light"> &copy; VocaList</small>
+                    <small class="text-light"> &copy; PawPals</small>
                 </div>
             </div>
         </div>
