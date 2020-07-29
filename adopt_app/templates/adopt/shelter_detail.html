@@ -43,9 +43,9 @@
     </div>
 </nav>
 
-<div class="container-fluid border">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-3 border">
+        <div class="col-3">
             <div class="container">
                 <br>
                 <h4 class="text-center">Search This Shelter</h4>
@@ -79,14 +79,18 @@
                         <div>
                         </div>
                     </div>
+                    <div class="text-center">
+                        <br>
+                        <iframe width="275" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB11lGhsfFI43-4q13cJ0-gz2lR5zN2wC8&q={{organization.address.address1}},{{organization.address.city}}+{{organization.address.state}}" allowfullscreen>
+                        </iframe>
+                        <br>
+                    </div>
                 </div>
-                <iframe width="275" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB11lGhsfFI43-4q13cJ0-gz2lR5zN2wC8&q={{organization.address.address1}},{{organization.address.city}}+{{organization.address.state}}" allowfullscreen>
-                </iframe>
             </div>
         </div>
-        <div class="col-9 border">
+        <div class="col-9">
             <br>
-            <h4 class="text-center">{{dogs | length}} Dogs At This Shelter</h4>
+            <h4 class="text-center">{{dogs|length}} Dogs At This Shelter</h4>
             <br>
             <div class="container">
 
