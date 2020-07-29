@@ -52,8 +52,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">So, who are you looking for in a <br>soul-mate?</h5>
-                    <form action="{% url 'search' %}" method='POST'>
-                        {% csrf_token %}
+                    <form action="{% url 'search' %}" method='GET'>
                         <div class="form-group">
                             <select class="custom-select" name="size" id="size">
                                 <option  value=''>Pick a Size</option>
@@ -98,6 +97,7 @@
                             </div>
                         </div>
                         <input type="submit" value="Let's Go!" class="btn btn-info">
+                        <input type="hidden" name="search" value="search">
                     </form>
                 </div>
             </div>
