@@ -9,27 +9,23 @@ import bcrypt
 def login(request):
     if request.method == "GET":
         return render(request, "login.html")
-    else:
-        # request.method == "POST":
+    elif request.method == "POST":
         if len(request.POST['email']) < 5:
             messages.error(request, "Please enter a valid e-mail", extra_tags="email")
             return redirect(reverse('login'))
         user = User.objects.filter(email__iexact=request.POST['email'])
         request.session['email'] = request.POST['email']
-        
         if user:
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
                 return redirect(reverse('home'))
-            # else:
-            #     messages.error(request, "Incorrect password", extra_tags="password")
-            #     return redirect(reverse('login'))
-        # else:
-        #     messages.error(request, "E-mail not registered", extra_tags="email")
-        #     return redirect(reverse('login'))
-        messages.error(request, "Email and password do not match."
-        return redirect(reverse('login')))
+            else:
+                messages.error(request, "Incorrect password", extra_tags="password")
+                return redirect(reverse('login'))
+        else:
+            messages.error(request, "E-mail not registered", extra_tags="email")
+            return redirect(reverse('login'))
 
 
 def register(request):
