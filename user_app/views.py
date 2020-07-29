@@ -9,23 +9,27 @@ import bcrypt
 def login(request):
     if request.method == "GET":
         return render(request, "login.html")
-    elif request.method == "POST":
+    else:
+        # request.method == "POST":
         if len(request.POST['email']) < 5:
             messages.error(request, "Please enter a valid e-mail", extra_tags="email")
             return redirect(reverse('login'))
         user = User.objects.filter(email__iexact=request.POST['email'])
         request.session['email'] = request.POST['email']
+        
         if user:
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
                 return redirect(reverse('home'))
-            else:
-                messages.error(request, "Incorrect password", extra_tags="password")
-                return redirect(reverse('login'))
-        else:
-            messages.error(request, "E-mail not registered", extra_tags="email")
-            return redirect(reverse('login'))
+            # else:
+            #     messages.error(request, "Incorrect password", extra_tags="password")
+            #     return redirect(reverse('login'))
+        # else:
+        #     messages.error(request, "E-mail not registered", extra_tags="email")
+        #     return redirect(reverse('login'))
+        messages.error(request, "Email and password do not match."
+        return redirect(reverse('login')))
 
 
 def register(request):
@@ -35,7 +39,7 @@ def register(request):
         errors = User.objects.basic_validator(request.POST)
         if len(errors) > 0:
             for key, value in errors.items():
-                messages.error(request,value, extra_tags=key)
+                messages.error(request, value, extra_tags=key)
             return redirect(reverse('register'))
         else:
             first_name = request.POST['first_name']
@@ -43,7 +47,12 @@ def register(request):
             email = request.POST['email']
             password = request.POST['password']
             pswd_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-            user = User.objects.create(first_name=first_name, last_name = last_name, email=email, password=pswd_hash)
+            user = User.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=pswd_hash
+                )
             if "user_id" not in request.session:
                 request.session['user_id'] = user.id
             return redirect(reverse("home"))
@@ -110,4 +119,4 @@ def update_password(request):
 
 def favorites(request, id):
     # return user's favorites
-    pass
+    return render(request, 'favorites.html')

@@ -1,0 +1,129 @@
+{% extends 'adopt/base3.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-info">
+    <a class="nav-link" href="#"></a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown" note="append class">
+                <select name="distance" class="custom-select" id="distance" form="dog-form">
+                    <option selected="" value="">Distance</option>
+                    <option value="5">5 miles from</option>
+                    <option value="10">10 miles from</option>
+                    <option value="25">25 miles from</option>
+                    <option value="50">50 miles from</option>
+                    <option value="100">100 miles from</option>
+                </select>
+            </li>
+            <li class="nav-item form-group col-4">
+                <input type="text" placeholder="Zip Code" class="form-control" name="location" form="dog-form">
+            </li>
+        </ul>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <div class="navbar-nav ml-auto">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown show" note="append class .show">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="true" aria-expanded="true">Sort By</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Newest</a>
+                        <a class="dropdown-item" href="#">Oldest</a>
+                        <a class="dropdown-item" href="#">Distance</a>
+                </li>
+            </ul>
+            <a class="nav-link" href="#"></a>
+            <a class="nav-link" href="#"></a>
+            <a class="nav-link" href="#"></a>
+            <a class="nav-link" href="#"></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="container">
+                <br>
+                <h4 class="text-center">Search This Shelter</h4>
+                <br>
+
+                <div class="col">
+                    <div class="card text-dark border-primary mb-3 text-center">
+                        <br>
+                        <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap"
+                            style="width:100px;height:100px;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{organization.name|upper}}</h5>
+                            {% if organization.address.address1 == None %}
+                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.city}},
+                                    {{organization.address.state}}</a></p>
+                            {% else %}
+                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.address1}}
+                                    <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
+                            {% endif %}
+                            {% if organization.phone == None %}
+                            <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
+                            {% else %}
+                            <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                            {% endif %}
+                            {% if organization.email == None %}
+                            <p>Email: <a href="#" class="card-text">Not Listed</a></p>
+                            {% else %}
+                            <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
+                            {% endif %}
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <br>
+                        <iframe width="275" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB11lGhsfFI43-4q13cJ0-gz2lR5zN2wC8&q={{organization.address.address1}},{{organization.address.city}}+{{organization.address.state}}" allowfullscreen>
+                        </iframe>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <br>
+            <h4 class="text-center">{{dogs|length}} Dogs At This Shelter</h4>
+            <br>
+            <div class="container">
+
+                <div class="row">
+                    {% for dog in dogs %}
+                    <div class="col-sm-4 mb-2">
+                        <div class="card text-center">
+                            {% if not dog.photos.0.medium %}
+                            <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap">
+                            {% else %}
+                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{dog.name|title}}</h5>
+                                <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>
+                                <p class="card-text">{{dog.contact.address.city | title}}</p>
+                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">MEET
+                                    {{dog.name|upper}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+{% endblock %}
