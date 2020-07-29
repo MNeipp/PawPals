@@ -141,9 +141,9 @@
                             <div class="card-body">
                                 <h5 class="card-title card_name">{{closest.name}}</h5>
                                 {% if closest.address.address1 == None %}
-                                    <p>Location: <a href="#" class="card-text">{{closest.address.city}}, {{closest.address.state}}</a></p>
+                                    <p>Location: <a href="{% url 'shelters' %}?city={{closest.address.city}}&state={{closest.address.state}}" class="card-text">{{closest.address.city}}, {{closest.address.state}}</a></p>
                                 {% else %}
-                                <p>Location: <a href="#" class="card-text">{{closest.address.address1}}
+                                <p>Location: <a href="{% url 'shelters' %}?city={{closest.address.city}}&state={{closest.address.state}}" class="card-text">{{closest.address.address1}}
                                     <br> {{closest.address.city}}, {{closest.address.state}}</a></p>
                                 {% endif %}
                                 {% if closest.phone == None %}

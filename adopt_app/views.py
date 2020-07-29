@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 import json
 import petpy
 from datetime import datetime, date, timedelta
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 today = datetime.today()
@@ -130,10 +130,16 @@ def shelters(request):
             sort = None
         organizations = Paginator(pf.organizations(location=location, distance=distance, pages=None, sort=sort)['organizations'],5)
         page = request.GET.get('page', 1)
+        try:
+            organizations = organizations.page(page)
+        except PageNotAnInteger:
+            organizations = organizations.page(1)
+        except EmptyPage:
+            organizations = organizations.page(organizations.num_pages)
         path = ''
         path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' ])
         context={
-            "organizations": organizations.page(page),
+            "organizations": organizations,
             "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
             "path":path
         }           

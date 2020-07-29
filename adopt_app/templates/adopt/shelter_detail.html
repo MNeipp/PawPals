@@ -59,10 +59,10 @@
                         <div class="card-body">
                             <h5 class="card-title">{{organization.name|upper}}</h5>
                             {% if organization.address.address1 == None %}
-                            <p>Location: <a href="#" class="card-text">{{organization.address.city}},
+                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.city}},
                                     {{organization.address.state}}</a></p>
                             {% else %}
-                            <p>Location: <a href="#" class="card-text">{{organization.address.address1}}
+                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.address1}}
                                     <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% endif %}
                             {% if organization.phone == None %}
@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <iframe width="300" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyABobvPOcqm0REvADGgshAWPkl61IKKqxE&q={{organization.address.address1}},{{organization.address.city}}+{{organization.address.state}}" allowfullscreen>
+                <iframe width="275" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB11lGhsfFI43-4q13cJ0-gz2lR5zN2wC8&q={{organization.address.address1}},{{organization.address.city}}+{{organization.address.state}}" allowfullscreen>
                 </iframe>
             </div>
         </div>
