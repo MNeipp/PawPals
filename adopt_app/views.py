@@ -74,7 +74,7 @@ def search(request):
             good_with_children = None
             good_with_dogs = None
             good_with_cats = True
-        if 'after_date' == '':
+        if 'after_date' not in request.POST or 'after_date' == '':
             after_date = None
         else:
             after_date = today - timedelta(days=int(request.POST['after_date']))

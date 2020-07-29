@@ -21,10 +21,10 @@ def login(request):
                 request.session['user_id'] = logged_user.id
                 return redirect(reverse('home'))
             else:
-                messages.error(request, "Incorrect password", extra_tags="password")
+                messages.error(request, "Incorrect password or e-mail", extra_tags="password")
                 return redirect(reverse('login'))
         else:
-            messages.error(request, "E-mail not registered", extra_tags="email")
+            messages.error(request, "Incorrect password or e-mail", extra_tags="email")
             return redirect(reverse('login'))
 
 
