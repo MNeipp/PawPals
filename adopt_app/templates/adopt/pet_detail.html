@@ -1,6 +1,13 @@
 {% extends 'adopt/base3.html' %}}
 
 {% block content %}
+
+<style>
+    .img{
+    cursor:pointer;
+}
+</style>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-info">
         <a class="nav-link" href="#"></a>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -126,14 +133,14 @@
                     <button type="submit" href="#" class="btn btn-outline-info">Add Me to Your Favorites</button>
                 </div>
                 <div>
-                    <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550">
+                    <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: cover;">
                     <div class="row d-flex justify-content-around">
                         {% if not dog.animals.photos.1.full %}
                         <h5>No Additional Photos Available</h5>
                         {% else %}
-                        <img class="img-thumbnail col-4" src="{{dog.animals.photos.1.full}}" alt="">
-                        <img class="img-thumbnail col-4" src="{{dog.animals.photos.2.full}}" alt="">
-                        <img class="img-thumbnail col-4" src="{{dog.animals.photos.3.full}}" alt="">
+                        <img class="img-thumbnail col-4 img" src="{{dog.animals.photos.0.full}}" alt="">
+                        <img class="img-thumbnail col-4 img" src="{{dog.animals.photos.1.full}}" alt="">
+                        <img class="img-thumbnail col-4 img" src="{{dog.animals.photos.2.full}}" alt="">
                         {% endif %}
                     </div>
                 </div>
@@ -142,6 +149,7 @@
     </div>        
 
 <script>
+// Script to load default if no images
     fixBrokenImages = function(url){
     var img = document.getElementsByTagName('img');
     var i=0, l=img.length;
@@ -153,10 +161,17 @@
         }
     }
 }
-
 window.onload = function() {
     fixBrokenImages('../static/adopt/images/grey_no_photo.png');
  }
+
+ //Update image and thumbnails
+ $('.img').click(function(){
+     var source = $(this).attr('src');
+     $('.main-img').attr('src', source);
+ })
+
+
 </script>
 
 {% endblock %}}
