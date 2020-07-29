@@ -27,59 +27,63 @@ def index(request):
 
 
 def search(request):
-    if request.method == "POST":
-        if request.POST['age'] == '':
+    if 'search' in request.GET:
+        if request.GET['age'] == '':
             age = None
         else:
-            age = request.POST['age']
-        if request.POST['size'] == '':
+            age = request.GET['age']
+        if request.GET['size'] == '':
             size = None
         else:
-            size = request.POST['size']
-        if request.POST['location'] == '':
+            size = request.GET['size']
+        if request.GET['location'] == '':
             location = None
         else:
-            location = request.POST['location']
-        if request.POST['distance'] == '':
+            location = request.GET['location']
+        if request.GET['distance'] == '':
             distance = None
         else:
-            distance = request.POST['distance']
-        if request.POST['breed'] == '':
+            distance = request.GET['distance']
+        if request.GET['breed'] == '':
             breed = None
         else:
-            breed = request.POST['breed']
-        if 'gender' not in request.POST:
+            breed = request.GET['breed']
+        if 'gender' not in request.GET:
             gender = None
-        elif request.POST['gender'] == '':
+        elif request.GET['gender'] == '':
             gender=None
         else:
-            gender = request.POST['gender']
-        if 'gets_along' not in request.POST:
+            gender = request.GET['gender']
+        if 'gets_along' not in request.GET:
             good_with_children = None
             good_with_dogs = None
             good_with_cats = None
-        elif request.POST['gets_along'] == '':
+        elif request.GET['gets_along'] == '':
             good_with_children = None
             good_with_dogs = None
             good_with_cats = None
-        elif request.POST['gets_along'] == 'kids':
+        elif request.GET['gets_along'] == 'kids':
             good_with_children = True
             good_with_dogs = None
             good_with_cats = None
-        elif request.POST['gets_along'] == 'dogs':
+        elif request.GET['gets_along'] == 'dogs':
             good_with_children = None
             good_with_dogs = True
             good_with_cats = None
-        elif request.POST['gets_along'] == 'cats':
+        elif request.GET['gets_along'] == 'cats':
             good_with_children = None
             good_with_dogs = None
             good_with_cats = True
-        if 'after_date' not in request.POST or 'after_date' == '':
+        if 'after_date' not in request.GET or request.GET['after_date'] == 'any':
             after_date = None
         else:
-            after_date = today - timedelta(days=int(request.POST['after_date']))
+            after_date = today - timedelta(days=int(request.GET['after_date']))
+        if 'sort' in request.GET:
+            sort = request.GET['sort']
+        else:
+            sort = None
         
-        dogs = pf.animals(
+        dogs = Paginator(pf.animals(
           animal_type='dog',
           status='adoptable',
           location=location,
@@ -92,19 +96,33 @@ def search(request):
           good_with_children=good_with_children,
           good_with_cats=good_with_cats,
           good_with_dogs=good_with_dogs,
-          after_date = after_date
-        )
-
-        context = {
-            'dogs': dogs['animals'],
-            'breeds': pf.breeds(types=['dog'])
+          after_date=after_date,
+          sort=sort
+        )['animals'],100)
+        page = request.GET.get('page', 1)
+        try:
+            dogs = dogs.page(page)
+        except PageNotAnInteger:
+            dogs = dogs.page(1)
+        except EmptyPage:
+            dogs = dogs.page(dogs.num_pages)
+        path = ''
+        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' and not key=='sort'])
+        context={
+            'dogs': dogs,
+            'breeds': pf.breeds(types=['dog']),
+            'path':path
         }
+        if 'user_id' in request.session:
+            context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
         return render(request, 'adopt/search.html', context)
 
     else:
-        context = {
-            'breeds': pf.breeds(types=['dog'])
+        context ={
+            'breeds': pf.breeds(types=['dog']),
         }
+        if 'user_id' in request.session:
+            context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
         return render(request, 'adopt/search.html', context)
 
 def pet_detail(request, dog_id):
@@ -114,6 +132,8 @@ def pet_detail(request, dog_id):
         "organization": pf.organizations(organization_id=dog['animals']['organization_id'])['organizations'],
         "date": datetime.strptime(dog['animals']['published_at'], '%Y-%m-%dT%H:%M:%S%z').date()
     }
+    if 'user_id' in request.session:
+        context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
     return render(request, 'adopt/pet_detail.html', context)
 
 
@@ -123,6 +143,8 @@ def shelters(request):
         context={
             "organizations": pf.organizations(pages=None, name=name)['organizations']
         }
+        if 'user_id' in request.session:
+            context.update({'logged_user': User.objects.get(id=request.session['user_id'])})
         return render(request,'adopt/shelters.html', context)
     elif 'city' in request.GET and 'state' in request.GET:
         location = f"{request.GET['city']}, {request.GET['state']}"
@@ -145,14 +167,21 @@ def shelters(request):
         except EmptyPage:
             organizations = organizations.page(organizations.num_pages)
         path = ''
-        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' ])
+        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' and not key=='sort'])
         context={
             "organizations": organizations,
             "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
             "path":path
-        }           
+        }
+        if 'user_id' in request.session:
+            context.update({'logged_user': User.objects.get(id=request.session['user_id'])})       
         return render(request,'adopt/shelters.html', context)
     else:
+        if 'user_id' in request.session:
+            context={
+                'logged_user': User.objects.get(id=request.session['user_id'])
+            }
+            return render(request, 'adopt/shelters.html', context)
         return render(request, 'adopt/shelters.html')
 
 
@@ -163,6 +192,8 @@ def shelter_detail(request, shelter_id):
         "dogs": pf.animals(organization_id=shelter_id, pages=None, animal_type='dog')['animals'],
         "breeds": pf.breeds(types=['dog']),
     }
+    if 'user_id' in request.session:
+        context.update({'logged_user': User.objects.get(id=request.session['user_id'])})    
     return render(request, 'adopt/shelter_detail.html', context)
 
 
