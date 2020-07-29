@@ -152,7 +152,7 @@ def shelters(request):
         return render(request,'adopt/shelters.html', context)
     elif 'city' in request.GET and 'state' in request.GET:
         if request.GET['city'] == '' and request.GET['state'] == '' or request.GET['zip'] == '':
-            messages.error(request, "You must enter a City and State or Zip Code", extra_tags='location')
+            messages.error(request, "You must enter a City and State or Zip Code or Name", extra_tags='location')
             context={}
             if 'user_id' in request.session:
                 context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
