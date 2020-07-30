@@ -222,16 +222,17 @@ def about(request):
 
 def add_favorite(request, dog_id):
     # check if pet is already in DB:
-    pet = Pet.objects.filter(petfinder_id__iexact=[dog_id])
+    pet = Pet.objects.filter(petfinder_id__iexact=dog_id)
+    print (pet)
 
     # if not in DB, create new Pet, storing Pet's petfinder_id in DB:
-    if not pet:
+    if len(pet) < 1:
         new_pet = Pet.objects.create(petfinder_id=dog_id)
         print("Created new Pet record.")
         this_pet = Pet.objects.get(id=new_pet.id)
 
     else:
-        this_pet = Pet.objects.get(id=pet.id)
+        this_pet = Pet.objects.get(id=pet[0].id)
 
     # create favorites relationship
     logged_user = User.objects.get(id=request.session['user_id'])

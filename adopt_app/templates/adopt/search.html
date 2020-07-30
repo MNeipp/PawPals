@@ -135,6 +135,7 @@
                 {% for dog in dogs %}
                     <div class="col-sm-4 mb-2 infinite-item">
                         <div class="card text-center">
+                            <a href="{% url 'add_favorite' dog.id %}" class="btn btn-outline-info"><i class='far fa-heart' style="font-size: x-large; color:crimson"></i></a>
                                 {% if not dog.photos.0.medium %}
                                 <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap" style="object-fit: contain; height:300px">
                                 {% else %}
