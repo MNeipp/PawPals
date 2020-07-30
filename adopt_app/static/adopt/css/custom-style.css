@@ -50,3 +50,28 @@
     border-radius: 50%;
     height: 130px;
 }
+
+.badge {
+    padding:9px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    margin-bottom:-50px;
+    z-index: +1;
+    opacity: .5;
+  }
+
+  .badge:hover {
+    opacity: 1
+  }
+
+  .badge-profile {
+    padding:9px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    opacity:1;
+    position:relative;
+    top:7px;
+    background:transparent
+  }

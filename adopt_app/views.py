@@ -116,7 +116,8 @@ def search(request):
             'dogs': dogs,
             'breeds': pf.breeds(types=['dog']),
             'path': path,
-            'dog_count': dog_count
+            'dog_count': dog_count,
+            'pets':Pet.objects.all(),
         }
         if 'user_id' in request.session:
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
@@ -221,6 +222,9 @@ def about(request):
 
 
 def add_favorite(request, dog_id):
+    if 'user_id' not in request.session:
+        messages.error(request, "You must be logged in to add to your favorites!")
+        return redirect('pet_detail', dog_id)
     # check if pet is already in DB:
     pet = Pet.objects.filter(petfinder_id__iexact=dog_id)
     print (pet)
