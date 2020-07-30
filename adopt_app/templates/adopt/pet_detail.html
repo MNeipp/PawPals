@@ -139,7 +139,7 @@
                 {% endif %}
                 <div class="type text-center">
                     <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
-                    <a href="{% url 'add_favorite' dog.animals.id %}" class="btn btn-outline-info">Add Me to Your Favorites <i class='far fa-heart'></i></a>
+                    <a href="{% url 'add_favorite' dog.animals.id %}" class="badge badge-light badge-profile"><i class='far fa-heart' style="font-size: x-large; color:crimson; margin-bottom: -50px;"></i></a>
                 </div>
                 <div>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: contain;">
