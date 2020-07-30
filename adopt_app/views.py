@@ -112,11 +112,14 @@ def search(request):
             dogs = dogs.page(dogs.num_pages)
         path = ''
         path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' and not key=='sort'])
+        pets = Pet.objects.filter(faved_by__id=request.session['user_id'])
+        faves = [pet.petfinder_id for pet in pets]
         context = {
             'dogs': dogs,
             'breeds': pf.breeds(types=['dog']),
             'path': path,
-            'dog_count': dog_count
+            'dog_count': dog_count,
+            'faves':faves
         }
         if 'user_id' in request.session:
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
@@ -221,6 +224,9 @@ def about(request):
 
 
 def add_favorite(request, dog_id):
+    if 'user_id' not in request.session:
+        messages.error(request, "You must be logged in to add to your favorites!")
+        return redirect('pet_detail', dog_id)
     # check if pet is already in DB:
     pet = Pet.objects.filter(petfinder_id__iexact=dog_id)
     print (pet)
