@@ -209,4 +209,8 @@ def shelter_detail(request, shelter_id):
 
 def about(request):
     # quick bio page
-    return render(request, 'adopt/about.html')
+    context = {
+    }
+    if 'user_id' in request.session:
+        context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
+    return render(request, 'adopt/about.html', context)

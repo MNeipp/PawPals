@@ -115,4 +115,9 @@ def update_password(request):
 
 def favorites(request, id):
     # return user's favorites
-    return render(request, 'favorites.html')
+    logged_user = User.objects.get(id=request.session['user_id'])
+    context = {
+        'logged_user': logged_user,
+    }
+
+    return render(request, 'favorites.html', context)
