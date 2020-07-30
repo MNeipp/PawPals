@@ -40,6 +40,14 @@
 </nav>
 {{faves}}
 
+{% for dog in dogs %}
+{% for fave in logged_user.has_faves.all %}
+{% if fave.petfinder_id == dog.id %}
+<p>{{dog.name}}</p>
+{% endif %}
+{% endfor %}
+{% endfor %}
+
 <div class="container-fluid border">
     <div class="row">
         <div class="col-3 border">
