@@ -238,7 +238,14 @@ def add_favorite(request, dog_id):
     logged_user.has_faves.add(this_pet)
     messages.success(request, "Successfully added to your favorites!")
 
-    print("added to favorites!")
-    
     return redirect('pet_detail', dog_id)
 
+
+def remove_favorite(request, dog_id):
+    # get the pet
+    this_pet = Pet.objects.filter(petfinder_id__iexact=[dog_id])
+    logged_user = User.objects.get(id=request.session['user_id'])
+    logged_user.has_faves.remove(this_pet)
+    messages.success(request, "Successfully removed from your favorites!")
+
+    return redirect('pet_detail', dog_id)
