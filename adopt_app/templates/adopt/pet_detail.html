@@ -47,7 +47,11 @@
                 </div>
                 <br>
                 <div class="col type">
+                    {% if dog.animals.age == 'Adult' %}
+                    <h6> An {{dog.animals.age}}, {{dog.animals.size}} Sized {{dog.animals.gender}} </h6>
+                    {% else %}
                     <h6> A {{dog.animals.age}}, {{dog.animals.size}} Sized {{dog.animals.gender}} </h6>
+                    {% endif %}
                 </div>
                 <br>
                 {% if dog.animals.colors.primary %}
@@ -127,10 +131,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
+                {% if messages %}
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+                {% endif %}
                 <div class="type text-center">
                     <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
-                    <button type="submit" href="#" class="btn btn-outline-info">Add Me to Your Favorites</button>
+                    <a href="{% url 'add_favorite' dog.animals.id %}" class="btn btn-outline-info">Add Me to Your Favorites</a>
                 </div>
                 <div>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: cover;">
