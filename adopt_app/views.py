@@ -112,17 +112,16 @@ def search(request):
             dogs = dogs.page(dogs.num_pages)
         path = ''
         path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' and not key=='sort'])
-        pets = Pet.objects.filter(faved_by__id=request.session['user_id'])
-        faves = [pet.petfinder_id for pet in pets]
         context = {
             'dogs': dogs,
             'breeds': pf.breeds(types=['dog']),
             'path': path,
             'dog_count': dog_count,
-            'faves':faves
         }
         if 'user_id' in request.session:
-            context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
+            context.update({'logged_user': User.objects.get(id=request.session['user_id'])})
+            pets = Pet.objects.filter(faved_by__id=request.session['user_id'])
+            context.update({'faves': [pet.petfinder_id for pet in pets]})
         return render(request, 'adopt/search.html', context)
 
     else:
@@ -250,9 +249,8 @@ def add_favorite(request, dog_id):
 
 def remove_favorite(request, dog_id):
     # get the pet
-    this_pet = Pet.objects.filter(petfinder_id__iexact=[dog_id])
+    this_pet = Pet.objects.get(petfinder_id__iexact=dog_id)
     logged_user = User.objects.get(id=request.session['user_id'])
     logged_user.has_faves.remove(this_pet)
     messages.success(request, "Successfully removed from your favorites!")
-
     return redirect('pet_detail', dog_id)
