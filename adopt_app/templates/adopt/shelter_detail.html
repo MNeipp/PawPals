@@ -58,22 +58,23 @@
                             style="width:100px;height:100px;">
                         <div class="card-body">
                             <h5 class="card-title">{{organization.name|upper}}</h5>
-                            {% if organization.address.address1 == None %}
-                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.city}},
-                                    {{organization.address.state}}</a></p>
+                            {% if organization.address.address1 == None and organization.address.city == None%}
+                                <p>Location:</p>
+                            {% elif organization.address.address1 == None %}
+                                <p>Location: <a href="https://www.google.com/maps/place/{{organization.address.city}}%{{organization.address.state}}" class="card-text" target="_blank">{{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% else %}
-                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.address1}}
-                                    <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
+                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text" target="_blank">{{organization.address.address1}}
+                                <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% endif %}
                             {% if organization.phone == None %}
-                            <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
+                            <p>Phone: <span class="card-text text-primary"></span></p>
                             {% else %}
-                            <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                            <p>Phone: <a href="tel:{{organization.phone}}">{{organization.phone}}</a></p>
                             {% endif %}
                             {% if organization.email == None %}
-                            <p>Email: <a href="#" class="card-text">Not Listed</a></p>
+                            <p>Email: <a href="#" class="card-text"></a></p>
                             {% else %}
-                            <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
+                            <p>Email: <a href="mailto:{{organization.email}}" class="card-text">{{organization.email}}</a></p>
                             {% endif %}
                         </div>
                         <div>
