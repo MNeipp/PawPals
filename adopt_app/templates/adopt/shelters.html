@@ -141,9 +141,9 @@
                             <br>
                             <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
                             <div class="card-body">
-                                <h5 class="card-title card_name">{{closest.name}}</h5>
+                                <h5 class="card-title card_name"><a href="{% url 'shelter_detail' closest.id %}">{{closest.name}}</a></h5>
                                 {% if closest.address.address1 == None %}
-                                    <p>Location: <a href="{% url 'shelters' %}?city={{closest.address.city}}&state={{closest.address.state}}" class="card-text">{{closest.address.city}}, {{closest.address.state}}</a></p>
+                                    <p>Location: <a href="https://www.google.com/maps/place/{{closest.address.city}}%{{closest.address.state}}" class="card-text" target="_blank">{{closest.address.city}}, {{closest.address.state}}</a></p>
                                 {% else %}
                                 <p>Location: <a href="{% url 'shelters' %}?city={{closest.address.city}}&state={{closest.address.state}}" class="card-text">{{closest.address.address1}}
                                     <br> {{closest.address.city}}, {{closest.address.state}}</a></p>
@@ -151,12 +151,12 @@
                                 {% if closest.phone == None %}
                                 <p>Phone: <span class="card-text text-primary">Not Listed</span></p>
                                 {% else %}
-                                <p>Phone: <span class="card-text text-primary">{{closest.phone}}</span></p>
+                                <p>Phone: <a href="tel:{{closest.phone}}">{{closest.phone}}</a></p>
                                 {% endif %}
                                 {% if closest.email == None %}
                                 <p>Email: <a href="#" class="card-text">Not Listed</a></p>
                                 {% else %}
-                                <p>Email: <a href="#" class="card-text">{{closest.email}}</a></p>
+                                <p>Email: <a href="mailto:{{closest.email}}" class="card-text">{{closest.email}}</a></p>
                                 {% endif %}
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                             <tbody>
                                 {% for organization in organizations %}
                                 <tr>
-                                    <th class="shel_name" scope="row">{{organization.name}}</th>
+                                <th class="shel_name" scope="row"><a href="{% url 'shelter_detail' organization.id %}">{{organization.name}}</a></th>
                                     <td><a href="{% url 'shelter_detail' organization.id %}">See Available Pets</a></td>
                                     <td><a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}">{{organization.address.city}}, {{organization.address.state}}</a></td>
                                     <td><p class="text-primary">{{organization.phone}}</p></td>
