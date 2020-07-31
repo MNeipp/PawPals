@@ -150,27 +150,30 @@ def pet_detail(request, dog_id):
 def shelters(request):
     if 'name' in request.GET and request.GET['name'] !='':
         name = request.GET['name']
+        messages.success(request, f"Results for {name}")
+
         context = {
             "organizations": pf.organizations(pages=None, name=name)['organizations']
         }
         if 'user_id' in request.session:
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})
         return render(request, 'adopt/shelters.html', context)
+
     elif 'city' in request.GET and 'state' in request.GET:
         if request.GET['city'] == '' and request.GET['state'] == '' or request.GET['zip'] == '':
             messages.error(request, "You must enter a City and State or Zip Code or Name", extra_tags='location')
-            context = {
+            context = {}
 
-            }
             if 'user_id' in request.session:
                 context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
             return render(request, 'adopt/shelters.html', context)
+
         location = f"{request.GET['city']}, {request.GET['state']}"
         if 'zip' in request.GET and request.GET['zip'] != '':
             location = request.GET['zip']
         if 'distance' in request.GET:
             distance = request.GET['distance']
-        else: 
+        else:
             distance = 5
         if 'sort' in request.GET:
             sort = request.GET['sort']
@@ -186,6 +189,8 @@ def shelters(request):
             organizations = organizations.page(organizations.num_pages)
         path = ''
         path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' and not key=='sort'])
+        
+        messages.success(request, f"Results for {location}")
         context = {
             "organizations": organizations,
             "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
