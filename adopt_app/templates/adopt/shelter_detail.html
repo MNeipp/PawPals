@@ -58,22 +58,23 @@
                             style="width:100px;height:100px;">
                         <div class="card-body">
                             <h5 class="card-title">{{organization.name|upper}}</h5>
-                            {% if organization.address.address1 == None %}
-                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.city}},
-                                    {{organization.address.state}}</a></p>
+                            {% if organization.address.address1 == None and organization.address.city == None%}
+                                <p>Location:</p>
+                            {% elif organization.address.address1 == None %}
+                                <p>Location: <a href="https://www.google.com/maps/place/{{organization.address.city}}%{{organization.address.state}}" class="card-text" target="_blank">{{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% else %}
-                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.address1}}
-                                    <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
+                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text" target="_blank">{{organization.address.address1}}
+                                <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% endif %}
                             {% if organization.phone == None %}
-                            <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
+                            <p>Phone: <span class="card-text text-primary"></span></p>
                             {% else %}
-                            <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                            <p>Phone: <a href="tel:{{organization.phone}}">{{organization.phone}}</a></p>
                             {% endif %}
                             {% if organization.email == None %}
-                            <p>Email: <a href="#" class="card-text">Not Listed</a></p>
+                            <p>Email: <a href="#" class="card-text"></a></p>
                             {% else %}
-                            <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
+                            <p>Email: <a href="mailto:{{organization.email}}" class="card-text">{{organization.email}}</a></p>
                             {% endif %}
                         </div>
                         <div>
@@ -96,19 +97,23 @@
 
                 <div class="row">
                     {% for dog in dogs %}
-                    <div class="col-sm-4 mb-2">
+                    <div class="col-sm-4 mb-2 infinite-item">
                         <div class="card text-center">
-                            {% if not dog.photos.0.medium %}
-                            <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap">
+                            {% if dog.id in faves %}
+                            <a href="{% url 'remove_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
                             {% else %}
-                            <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}">
+                            <a href="{% url 'add_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
                             {% endif %}
+                                {% if not dog.photos.0.medium %}
+                                <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap" style="object-fit: contain; height:200px">
+                                {% else %}
+                                <img class="card-img-top" src="{{dog.photos.0.medium}}" alt="A photo of {{dog.name|title}}" style="object-fit: cover; height:300px">
+                                {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{dog.name|title}}</h5>
                                 <p class="card-text">{{dog.age}} | {{dog.breeds.primary}}</p>
-                                <p class="card-text">{{dog.contact.address.city | title}}</p>
-                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">MEET
-                                    {{dog.name|upper}}</a>
+                                <p class="card-text">{{dog.contact.address.city|title}}</p>
+                                <a href="{% url 'pet_detail' dog.id %}" class="btn btn-primary">MEET {{dog.name|upper}}</a>
                             </div>
                         </div>
                     </div>
@@ -122,6 +127,28 @@
 </div>
 
 
+
+<script>
+    // like/unlike doggos
+    $('#doggos').on('click','.badge', function(e){
+        e.preventDefault();
+        $.ajax({
+            method: 'GET',
+            url: $(this).attr('href')
+        });
+        alt_href = $(this).attr('alt_href');
+        href = $(this).attr('href');
+        $(this).attr('href', alt_href);
+        $(this).attr('alt_href', href);
+        alt_class = $(this).children().attr('alt_class');
+        _class = $(this).children().attr('class');
+        $(this).children().attr('class', alt_class);
+        $(this).children().attr('alt_class', _class);
+    })
+    
+    
+    
+    </script>
 
 
 
