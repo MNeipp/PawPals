@@ -38,15 +38,6 @@
         </div>
     </div>
 </nav>
-{{faves}}
-
-{% for dog in dogs %}
-{% for fave in logged_user.has_faves.all %}
-{% if fave.petfinder_id == dog.id %}
-<p>{{dog.name}}</p>
-{% endif %}
-{% endfor %}
-{% endfor %}
 
 <div class="container-fluid border">
     <div class="row">
@@ -140,14 +131,14 @@
             <br>
             <div class="container">
 
-                <div class="row infinite-container">
+                <div class="row infinite-container" id="doggos">
                     {% for dog in dogs %}
                     <div class="col-sm-4 mb-2 infinite-item">
                         <div class="card text-center">
                             {% if dog.id in faves %}
-                            <a href="{% url 'add_favorite' dog.id %}" class="badge badge-light align-self-end mr-2"><i class='fas fa-heart' style="font-size: x-large; color:crimson;"></i></a> 
+                            <a href="{% url 'remove_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
                             {% else %}
-                            <a href="{% url 'add_favorite' dog.id %}" class="badge badge-light align-self-end mr-2"><i class='far fa-heart' style="font-size: x-large; color:crimson;"></i></a> 
+                            <a href="{% url 'add_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
                             {% endif %}
                                 {% if not dog.photos.0.medium %}
                                 <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap" style="object-fit: contain; height:200px">
@@ -162,10 +153,10 @@
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-                {% if dogs.has_next %}
-                <a href="{% url 'search' %}?{{path}}&page={{dogs.next_page_number }}" class="infinite-more-link" style="display:none"></a>
-                {% endif %}
+                    {% endfor %}
+                    {% if dogs.has_next %}
+                    <a href="{% url 'search' %}?{{path}}&page={{dogs.next_page_number }}" class="infinite-more-link" style="display:none"></a>
+                    {% endif %}
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="spinner-border" role="status" style="display:none;">
@@ -216,6 +207,28 @@
     window.onload = function() {
         fixBrokenImages('../static/adopt/images/grey_no_photo.png');
     }
+</script>
+
+<script>
+// like/unlike doggos
+$('#doggos').on('click','.badge', function(e){
+    e.preventDefault();
+    $.ajax({
+        method: 'GET',
+        url: $(this).attr('href')
+    });
+    alt_href = $(this).attr('alt_href');
+    href = $(this).attr('href');
+    $(this).attr('href', alt_href);
+    $(this).attr('alt_href', href);
+    alt_class = $(this).children().attr('alt_class');
+    _class = $(this).children().attr('class');
+    $(this).children().attr('class', alt_class);
+    $(this).children().attr('alt_class', _class);
+})
+
+
+
 </script>
 
 
