@@ -138,10 +138,14 @@
                 {% endfor %}
                 {% endif %}
                 <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
+                {% if logged_user %}
                 {% if dog.animals.id in faves %}
                 <a href="{% url 'remove_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.animals.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
                 {% else %}
                 <a href="{% url 'add_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.animals.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
+                {% endif %}
+                {% else %}
+                <p>Log in to save your favorite pups!</p>
                 {% endif %}
                 <div>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: contain;">
