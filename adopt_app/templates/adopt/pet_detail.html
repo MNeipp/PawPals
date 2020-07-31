@@ -137,10 +137,12 @@
                     {{message}}
                 {% endfor %}
                 {% endif %}
-                <div class="type text-center">
-                    <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
-                    <a href="{% url 'add_favorite' dog.animals.id %}" class="badge badge-light badge-profile"><i class='far fa-heart' style="font-size: x-large; color:crimson; margin-bottom: -50px;"></i></a>
-                </div>
+                <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
+                {% if dog.animals.id in faves %}
+                <a href="{% url 'remove_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.animals.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
+                {% else %}
+                <a href="{% url 'add_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.animals.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
+                {% endif %}
                 <div>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: contain;">
                     <div class="row d-flex justify-content-around">
@@ -180,7 +182,22 @@ window.onload = function() {
      $('.main-img').attr('src', source);
  })
 
-
+// Like/Unlike doggos
+ $('.badge').click(function(e){
+    e.preventDefault();
+    $.ajax({
+        method: 'GET',
+        url: $(this).attr('href')
+    });
+    alt_href = $(this).attr('alt_href');
+    href = $(this).attr('href');
+    $(this).attr('href', alt_href);
+    $(this).attr('alt_href', href);
+    alt_class = $(this).children().attr('alt_class');
+    _class = $(this).children().attr('class');
+    $(this).children().attr('class', alt_class);
+    $(this).children().attr('alt_class', _class);
+})
 </script>
 
 {% endblock %}}

@@ -142,6 +142,8 @@ def pet_detail(request, dog_id):
     }
     if 'user_id' in request.session:
         context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
+        pets = Pet.objects.filter(faved_by__id=request.session['user_id'])
+        context.update({'faves': [pet.petfinder_id for pet in pets]})
     return render(request, 'adopt/pet_detail.html', context)
 
 
