@@ -1,7 +1,10 @@
 from django.shortcuts import render, reverse, redirect
 from django.contrib import messages
 from .models import User
-import bcrypt
+import bcrypt, petpy
+from adopt_app.models import Pet
+pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
+
 
 # Create your views here.
 
@@ -115,9 +118,27 @@ def update_password(request):
 
 def favorites(request, id):
     # return user's favorites
+    if 'user_id' not in request.session:
+        return redirect()
     logged_user = User.objects.get(id=request.session['user_id'])
+    pets = Pet.objects.filter(faved_by__id=request.session['user_id'])
+    fave_ids = [pet.petfinder_id for pet in pets]
+    faves = []
+    adoption_count = 0
+    for pet in pets:
+        try:
+            faves.append(pf.animals(animal_id= pet.petfinder_id)['animals'])
+        except:
+            # Catches pets no longer available and removes them from the user's favorites
+            adoption_count += 1
+            this_pet = Pet.objects.get(petfinder_id__iexact=pet.petfinder_id)
+            logged_user.has_faves.remove(this_pet)
+            this_pet.delete()
     context = {
         'logged_user': logged_user,
+        'faves':faves,
+        'adoption_count':adoption_count,
+        'fave_ids': fave_ids
     }
 
     return render(request, 'favorites.html', context)
