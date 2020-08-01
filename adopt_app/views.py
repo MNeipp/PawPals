@@ -151,7 +151,6 @@ def shelters(request):
     if 'name' in request.GET and request.GET['name'] !='':
         name = request.GET['name']
         messages.success(request, f"Results for {name}")
-
         context = {
             "organizations": pf.organizations(pages=None, name=name)['organizations']
         }
@@ -160,15 +159,14 @@ def shelters(request):
         return render(request, 'adopt/shelters.html', context)
 
     elif 'city' in request.GET and 'state' in request.GET:
-        if request.GET['city'] == '' and request.GET['state'] == '' or request.GET['zip'] == '':
+        if request.GET['city'] == '' and request.GET['state'] == '' and request.GET['zip'] == '':
             messages.error(request, "You must enter a City and State or Zip Code or Name", extra_tags='location')
             context = {}
-
             if 'user_id' in request.session:
                 context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
             return render(request, 'adopt/shelters.html', context)
-
-        location = f"{request.GET['city']}, {request.GET['state']}"
+        else:
+            location = f"{request.GET['city']}, {request.GET['state']}"
         if 'zip' in request.GET and request.GET['zip'] != '':
             location = request.GET['zip']
         if 'distance' in request.GET:
@@ -188,9 +186,9 @@ def shelters(request):
         except EmptyPage:
             organizations = organizations.page(organizations.num_pages)
         path = ''
-        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' and not key=='sort'])
+        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page'])
         
-        messages.success(request, f"Results for {location}")
+        messages.success(request, f"Results for {location}", extra_tags='success')
         context = {
             "organizations": organizations,
             "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
@@ -206,6 +204,35 @@ def shelters(request):
             }
             return render(request, 'adopt/shelters.html', context)
         return render(request, 'adopt/shelters.html')
+
+def shelters_ajax(request):
+    location = f"{request.GET['city']}, {request.GET['state']}"
+    if 'zip' in request.GET and request.GET['zip'] != '':
+        location = request.GET['zip']
+    if 'distance' in request.GET:
+        distance = request.GET['distance']
+    else:
+        distance = 5
+    if 'sort' in request.GET:
+        sort = request.GET['sort']
+    else:
+        sort = None
+    organizations = Paginator(pf.organizations(location=location, distance=distance, pages=None, sort=sort)['organizations'],5)
+    page = request.GET.get('page', 1)
+    try:
+        organizations = organizations.page(page)
+    except PageNotAnInteger:
+        organizations = organizations.page(1)
+    except EmptyPage:
+        organizations = organizations.page(organizations.num_pages)
+    path = ''
+    path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page'])
+    context = {
+        "organizations": organizations,
+        "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
+        "path": path
+    }    
+    return render(request, 'snippets/shelters_snippet.html', context)
 
 
 def shelter_detail(request, shelter_id):
