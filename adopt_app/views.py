@@ -210,9 +210,13 @@ def shelters(request):
 
 def shelter_detail(request, shelter_id):
     organization = pf.organizations(organization_id=shelter_id)
+    if 'sort' in request.GET:
+        sort = request.GET['sort']
+    else:
+        sort = None
     context = {
         "organization": organization['organizations'],
-        "dogs": pf.animals(organization_id=shelter_id, pages=None, animal_type='dog')['animals'],
+        "dogs": pf.animals(organization_id=shelter_id, pages=None, animal_type='dog', sort=sort)['animals'],
         "breeds": pf.breeds(types=['dog']),
     }
     if 'user_id' in request.session:

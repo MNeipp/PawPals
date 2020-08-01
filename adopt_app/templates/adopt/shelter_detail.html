@@ -30,9 +30,8 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                         aria-haspopup="true" aria-expanded="true">Sort By</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Newest</a>
-                        <a class="dropdown-item" href="#">Oldest</a>
-                        <a class="dropdown-item" href="#">Distance</a>
+                        <a class="dropdown-item" href="{% url 'shelter_detail' organization.id %}?sort=recent">Newest</a>
+                        <a class="dropdown-item" href="{% url 'shelter_detail' organization.id %}?sort=-recent">Oldest</a>
                 </li>
             </ul>
             <a class="nav-link" href="#"></a>
@@ -63,7 +62,7 @@
                             {% elif organization.address.address1 == None %}
                                 <p>Location: <a href="https://www.google.com/maps/place/{{organization.address.city}}%{{organization.address.state}}" class="card-text" target="_blank">{{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% else %}
-                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text" target="_blank">{{organization.address.address1}}
+                            <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}&zip={{organization.address.postcode}}" class="card-text" target="_blank">{{organization.address.address1}}
                                 <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
                             {% endif %}
                             {% if organization.phone == None %}
