@@ -127,10 +127,12 @@
                     {% for dog in dogs %}
                     <div class="col-sm-4 mb-2 infinite-item">
                         <div class="card text-center">
+                            {% if logged_user %}
                             {% if dog.id in faves %}
                             <a href="{% url 'remove_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
                             {% else %}
                             <a href="{% url 'add_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
+                            {% endif %}
                             {% endif %}
                                 {% if not dog.photos.0.medium %}
                                 <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap" style="object-fit: contain; height:200px">
