@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import User
 import bcrypt, petpy
 from adopt_app.models import Pet
+
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 
 
@@ -84,10 +85,6 @@ def update_profile(request):
     logged_user.first_name = request.POST['first_name']
     logged_user.last_name = request.POST['last_name']
     logged_user.email = request.POST['email']
-    if 'anonymous' in request.POST:
-        logged_user.anonymous = True
-    else:
-        logged_user.anonymous = False
     if 'profile_picture' in request.FILES:
         logged_user.image = request.FILES['profile_picture']
     logged_user.save()
@@ -116,10 +113,10 @@ def update_password(request):
         return redirect(reverse('user_profile'))
 
 
-def favorites(request, id):
+def favorites(request):
     # return user's favorites
     if 'user_id' not in request.session:
-        return redirect()
+        return redirect(reverse('home'))
     logged_user = User.objects.get(id=request.session['user_id'])
     pets = Pet.objects.filter(faved_by__id=request.session['user_id'])
     fave_ids = [pet.petfinder_id for pet in pets]
