@@ -38,7 +38,6 @@
         </div>
     </div>
 </nav>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-3">
@@ -112,13 +111,13 @@
         </div>
         <div class="col-9">
             <br>
-                {% if not dog_count %}
-                <h4 class="text-center">Start your search to the left!</h4>
-                {% else %}
+                {% if dog_count == 0 %}
                 <h4 class="text-center">{{dog_count}} Dogs Found</h4>
-                {% if dogs|length == 0 %}
                 <h5 class="text-center">Try another search!</h5>
-                {% endif %}
+                {% elif dog_count %}
+                <h4 class="text-center">{{dog_count}} Dogs Found</h4>
+                {% else %}
+                <h4 class="text-center">Start your search to the left!</h4>
                 {% endif %}
             <br>
             <div class="container">
@@ -220,9 +219,6 @@ $('#doggos').on('click','.badge', function(e){
     $(this).children().attr('class', alt_class);
     $(this).children().attr('alt_class', _class);
 })
-
-
-
 </script>
 
 

@@ -28,7 +28,7 @@
             <br>
             <h4 class="text-center">Search For Shelters</h4>
             <br>
-            <form action="{% url 'shelters_ajax' %}" method="GET">
+            <form action="{% url 'shelters' %}" method="GET">
                 <div class="row">
                     <div class="form-col col-md-7">
                         <h5>BY LOCATION
@@ -188,7 +188,7 @@
                                 <tr>
                                 <th class="shel_name" scope="row"><a href="{% url 'shelter_detail' organization.id %}">{{organization.name}}</a></th>
                                     <td><a href="{% url 'shelter_detail' organization.id %}">See Available Pets</a></td>
-                                    <td><a href="{% url 'shelters_ajax' %}?city={{organization.address.city}}&state={{organization.address.state}}">{{organization.address.city}}, {{organization.address.state}}</a></td>
+                                    <td><a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}">{{organization.address.city}}, {{organization.address.state}}</a></td>
                                     <td><a href="tel:{{closest.phone}}">{{organization.phone}}</a></td>
                                 </tr>
                                 {% endfor %}

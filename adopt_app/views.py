@@ -15,17 +15,12 @@ today = datetime.today()
 
 
 def index(request):
+    context = {
+        'breed': pf.breeds(types=['dog']),
+        }
     if 'user_id' in request.session:
-        context = {
-            'breeds': pf.breeds(types=['dog']),
-            'logged_user': User.objects.get(id=request.session['user_id'])
-        }
-        return render(request, 'adopt/index.html', context)
-    else:
-        context = {
-            'breed': pf.breeds(types=['dog']),
-        }
-        return render(request, 'adopt/index.html', context)
+        context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
+    return render(request, 'adopt/index.html', context)
 
 
 def search(request):
@@ -131,7 +126,6 @@ def search(request):
         if 'user_id' in request.session:
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
         return render(request, 'adopt/search.html', context)
-
 
 def pet_detail(request, dog_id):
     dog = pf.animals(animal_id=dog_id)
