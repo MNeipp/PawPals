@@ -1,0 +1,52 @@
+<div class="col">
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th scope="col" >Organization</th>
+                <th scope="col" >Pet List</th>
+                <th scope="col" >City, State</th>
+                <th scope="col" >Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for organization in organizations %}
+            <tr>
+                <th class="shel_name" scope="row"><a
+                        href="{% url 'shelter_detail' organization.id %}">{{organization.name}}</a></th>
+                <td><a href="{% url 'shelter_detail' organization.id %}">See Available Pets</a></td>
+                <td><a
+                        href="{% url 'shelters_ajax' %}?city={{organization.address.city}}&state={{organization.address.state}}">{{organization.address.city}},
+                        {{organization.address.state}}</a></td>
+                <td><a href="tel:{{closest.phone}}">{{organization.phone}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row d-flex justify-content-center">
+        {% if organizations.has_other_pages%}
+        <ul class="pagination">
+            {% if organizations.has_previous %}
+            <li class='page-item'><a href="{% url 'shelters_ajax' %}?{{path}}&page={{organizations.previous_page_number}}"
+                    class='page-link'>&laquo;</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+            {% endif %}
+            {% for page in organizations.paginator.page_range %}
+            {% if organizations.number == page %}
+            <li class="active page-item"><span class="page-link">{{ page }} <span
+                        class="sr-only">(current)</span></span></li>
+            {% elif page > organizations.number|add:'-3' and page < organizations.number|add:'3' %}
+            <li class="page-item"><a href="{% url 'shelters_ajax' %}?{{path}}&page={{ page }}"
+                    class='page-link'>{{ page }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if organizations.has_next %}
+            <li class="page-item"><a href="{% url 'shelters_ajax' %}?{{path}}&page={{ organizations.next_page_number }}"
+                    class="page-link">&raquo;</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
