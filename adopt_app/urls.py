@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views as adopt_views
 
-
 urlpatterns = [
     path('', adopt_views.index, name="home"),
     path('search/', adopt_views.search, name="search"),

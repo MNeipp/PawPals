@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-import json
-import petpy
+import json, petpy
 from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user_app.models import User
@@ -9,9 +8,6 @@ from django.contrib import messages
 
 pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
 today = datetime.today()
-
-
-# Create your views here.
 
 
 def index(request):
@@ -140,7 +136,6 @@ def pet_detail(request, dog_id):
         context.update({'faves': [pet.petfinder_id for pet in pets]})
     return render(request, 'adopt/pet_detail.html', context)
 
-
 def shelters(request):
     if 'name' in request.GET and request.GET['name'] !='':
         name = request.GET['name']
@@ -260,12 +255,10 @@ def add_favorite(request, dog_id):
         return redirect('pet_detail', dog_id)
     # check if pet is already in DB:
     pet = Pet.objects.filter(petfinder_id__iexact=dog_id)
-    print (pet)
 
     # if not in DB, create new Pet, storing Pet's petfinder_id in DB:
     if len(pet) < 1:
         new_pet = Pet.objects.create(petfinder_id=dog_id)
-        print("Created new Pet record.")
         this_pet = Pet.objects.get(id=new_pet.id)
 
     else:
@@ -277,7 +270,6 @@ def add_favorite(request, dog_id):
     messages.success(request, "Successfully added to your favorites!")
 
     return redirect('pet_detail', dog_id)
-
 
 def remove_favorite(request, dog_id):
     # get the pet
