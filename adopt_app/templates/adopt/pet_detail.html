@@ -147,7 +147,9 @@
                 {% else %}
                 <p>Log in to save your favorite pups!</p>
                 {% endif %}
+                <br>
                 <div>
+                    <br>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: contain;">
                     <div class="row d-flex justify-content-around">
                         {% if not dog.animals.photos.1.full %}

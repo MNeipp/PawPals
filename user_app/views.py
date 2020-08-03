@@ -124,7 +124,7 @@ def favorites(request):
     adoption_count = 0
     for pet in pets:
         try:
-            faves.append(pf.animals(animal_id= pet.petfinder_id)['animals'])
+            faves.append(pf.animals(animal_id=pet.petfinder_id)['animals'])
         except:
             # Catches pets no longer available and removes them from the user's favorites
             adoption_count += 1
@@ -133,8 +133,8 @@ def favorites(request):
             this_pet.delete()
     context = {
         'logged_user': logged_user,
-        'faves':faves,
-        'adoption_count':adoption_count,
+        'faves': faves,
+        'adoption_count': adoption_count,
         'fave_ids': fave_ids
     }
 
