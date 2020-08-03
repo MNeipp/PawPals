@@ -24,6 +24,8 @@ def login(request):
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
                 next = request.POST.get('next', '/')
+                if next == '':
+                    return redirect(reverse('search'))
                 return HttpResponseRedirect(next)
             else:
                 messages.error(request, "Incorrect password or e-mail", extra_tags="password")
