@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse
-import json, petpy
+import json
+import petpy
 from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user_app.models import User
