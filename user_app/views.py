@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import render, reverse, redirect, HttpResponseRedirect
 from django.contrib import messages
 from .models import User
 import bcrypt, petpy
@@ -23,7 +23,10 @@ def login(request):
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
-                return redirect(reverse('home'))
+                next = request.POST.get('next', '/')
+                if next == '':
+                    return redirect(reverse('search'))
+                return HttpResponseRedirect(next)
             else:
                 messages.error(request, "Incorrect password or e-mail", extra_tags="password")
                 return redirect(reverse('login'))
