@@ -145,7 +145,7 @@
                 <a href="{% url 'add_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.animals.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
                 {% endif %}
                 {% else %}
-                <p>Log in to save your favorite pups!</p>
+                <a href="" class="badge badge-light align-self-end mr-2" data-toggle="modal" data-target="#favoritesModal"><i class='far fa-heart' style="font-size: x-large; color:crimson;"></i></a> 
                 {% endif %}
                 <div>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: contain;">
@@ -161,7 +161,19 @@
                 </div>
             </div>
         </div> 
-    </div>        
+    </div>
+
+    <div class="modal fade " tabindex="-1" role="dialog" id="favoritesModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-body text-center">
+              <p class="text-primary text-center font-weight-bolder">You must log in to add a dog to your favorites!</p>
+              <a href="{% url 'login' %}?next={{ request.path|urlencode }}" class="btn btn-info">Login</a>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">No Thanks</button>
+            </div>
+          </div>
+        </div>
+    </div>
 
 <script>
 // Script to load default if no images

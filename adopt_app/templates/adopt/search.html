@@ -168,7 +168,7 @@
       <div class="modal-content">
           <div class="modal-body text-center">
           <p class="text-primary text-center font-weight-bolder">You must log in to add a dog to your favorites!</p>
-          <a href="{% url 'login' %}" class="btn btn-info">Login</a>
+          <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-info">Login</a>
           <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">No Thanks</button>
         </div>
       </div>

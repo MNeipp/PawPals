@@ -50,6 +50,7 @@
                     <h5 class="card-title text-center">Login</h5>
                     <form action="{% url 'login' %}" class="mt-4" method="POST" id="login-form">
                         {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
                         <div class="form-group">
                             <label for="email" class="col-form-label ">Email:</label>
                             <input type="email" class="form-control" name="email" id="email" value="{{email}}">
