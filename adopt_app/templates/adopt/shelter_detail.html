@@ -94,14 +94,18 @@
             <br>
             <div class="container">
 
-                <div class="row">
+                <div class="row" id="doggos">
                     {% for dog in dogs %}
                     <div class="col-sm-4 mb-2 infinite-item">
                         <div class="card text-center">
+                            {% if logged_user %}
                             {% if dog.id in faves %}
                             <a href="{% url 'remove_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
                             {% else %}
                             <a href="{% url 'add_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
+                            {% endif %}
+                            {% else %}
+                            <a href="" class="badge badge-light align-self-end mr-2" data-toggle="modal" data-target="#favoritesModal"><i class='far fa-heart' style="font-size: x-large; color:crimson;"></i></a> 
                             {% endif %}
                                 {% if not dog.photos.0.medium %}
                                 <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap" style="object-fit: contain; height:200px">
@@ -123,6 +127,17 @@
         </div>
     </div>
 
+</div>
+<div class="modal fade " tabindex="-1" role="dialog" id="favoritesModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-body text-center">
+          <p class="text-primary text-center font-weight-bolder">You must log in to add a dog to your favorites!</p>
+          <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-info">Login</a>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">No Thanks</button>
+        </div>
+      </div>
+    </div>
 </div>
 
 
