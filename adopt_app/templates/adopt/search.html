@@ -38,10 +38,9 @@
         </div>
     </div>
 </nav>
-
-<div class="container-fluid border">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-3 border">
+        <div class="col-3">
             <div class="container">
                 <br>
                 <h4 class="text-center">Filter Your Search</h4>
@@ -100,17 +99,9 @@
                             <option value="1">1</option>
                             <option value="7">7</option>
                             <option value="14">14</option>
-                            <option value="30>">30+</option>
+                            <option value="30">30+</option>
                         </select>
                     </div>
-                    <!-- <div class="form-group">
-                        <p>PET NAME</p>
-                        <input type="text" placeholder="ex. Spot" class="form-control" name="pet_name">
-                    </div>
-                    <div class="form-group">
-                        <p>SHELTER or RESCUE</p>
-                        <input type="text" placeholder="ex. NKLA" class="form-control" name="shelter_name">
-                    </div> -->
                     <div class="text-center">
                         <input type="submit" value="SEARCH" class="btn btn-info">
                     </div>
@@ -118,15 +109,15 @@
                 </form>
             </div>
         </div>
-        <div class="col-9 border">
+        <div class="col-9">
             <br>
-                {% if not dog_count %}
-                <h4 class="text-center">Start your search to the left!</h4>
-                {% else %}
+                {% if dog_count == 0 %}
                 <h4 class="text-center">{{dog_count}} Dogs Found</h4>
-                {% if dogs|length == 0 %}
                 <h5 class="text-center">Try another search!</h5>
-                {% endif %}
+                {% elif dog_count %}
+                <h4 class="text-center">{{dog_count}} Dogs Found</h4>
+                {% else %}
+                <h4 class="text-center">Start your search to the left!</h4>
                 {% endif %}
             <br>
             <div class="container">
@@ -135,10 +126,14 @@
                     {% for dog in dogs %}
                     <div class="col-sm-4 mb-2 infinite-item">
                         <div class="card text-center">
+                            {% if logged_user %}
                             {% if dog.id in faves %}
                             <a href="{% url 'remove_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
                             {% else %}
                             <a href="{% url 'add_favorite' dog.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
+                            {% endif %}
+                            {% else %}
+                            <a href="" class="badge badge-light align-self-end mr-2" data-toggle="modal" data-target="#favoritesModal"><i class='far fa-heart' style="font-size: x-large; color:crimson;"></i></a> 
                             {% endif %}
                                 {% if not dog.photos.0.medium %}
                                 <img class="card-img-top" src="/static/adopt/images/grey_no_photo.png" alt="Card image cap" style="object-fit: contain; height:200px">
@@ -166,8 +161,20 @@
             </div>
         </div>
     </div>
-    
 </div>
+
+<div class="modal fade " tabindex="-1" role="dialog" id="favoritesModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-body text-center">
+          <p class="text-primary text-center font-weight-bolder">You must log in to add a dog to your favorites!</p>
+          <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-info">Login</a>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">No Thanks</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script src="{% static '/adopt/js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static '/adopt/js/infinite.min.js' %}"></script>
@@ -226,10 +233,8 @@ $('#doggos').on('click','.badge', function(e){
     $(this).children().attr('class', alt_class);
     $(this).children().attr('alt_class', _class);
 })
-
-
-
 </script>
+
 
 
 

@@ -11,21 +11,13 @@ pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', s
 today = datetime.today()
 
 
-# Create your views here.
-
-
 def index(request):
+    context = {
+        'breed': pf.breeds(types=['dog']),
+        }
     if 'user_id' in request.session:
-        context = {
-            'breeds': pf.breeds(types=['dog']),
-            'logged_user': User.objects.get(id=request.session['user_id'])
-        }
-        return render(request, 'adopt/index.html', context)
-    else:
-        context = {
-            'breed': pf.breeds(types=['dog']),
-        }
-        return render(request, 'adopt/index.html', context)
+        context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
+    return render(request, 'adopt/index.html', context)
 
 
 def search(request):
@@ -132,7 +124,6 @@ def search(request):
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
         return render(request, 'adopt/search.html', context)
 
-
 def pet_detail(request, dog_id):
     dog = pf.animals(animal_id=dog_id)
     context = {
@@ -146,31 +137,31 @@ def pet_detail(request, dog_id):
         context.update({'faves': [pet.petfinder_id for pet in pets]})
     return render(request, 'adopt/pet_detail.html', context)
 
-
 def shelters(request):
     if 'name' in request.GET and request.GET['name'] !='':
         name = request.GET['name']
+        messages.success(request, f"Results for {name}")
         context = {
             "organizations": pf.organizations(pages=None, name=name)['organizations']
         }
         if 'user_id' in request.session:
             context.update({'logged_user': User.objects.get(id=request.session['user_id'])})
         return render(request, 'adopt/shelters.html', context)
-    elif 'city' in request.GET and 'state' in request.GET:
-        if request.GET['city'] == '' and request.GET['state'] == '' or request.GET['zip'] == '':
-            messages.error(request, "You must enter a City and State or Zip Code or Name", extra_tags='location')
-            context = {
 
-            }
+    elif 'city' in request.GET and 'state' in request.GET:
+        if request.GET['city'] == '' and request.GET['state'] == '' and request.GET['zip'] == '':
+            messages.error(request, "You must enter a City and State or Zip Code or Name", extra_tags='location')
+            context = {}
             if 'user_id' in request.session:
                 context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
             return render(request, 'adopt/shelters.html', context)
-        location = f"{request.GET['city']}, {request.GET['state']}"
+        else:
+            location = f"{request.GET['city']}, {request.GET['state']}"
         if 'zip' in request.GET and request.GET['zip'] != '':
             location = request.GET['zip']
         if 'distance' in request.GET:
             distance = request.GET['distance']
-        else: 
+        else:
             distance = 5
         if 'sort' in request.GET:
             sort = request.GET['sort']
@@ -185,7 +176,9 @@ def shelters(request):
         except EmptyPage:
             organizations = organizations.page(organizations.num_pages)
         path = ''
-        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page' and not key=='sort'])
+        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page'])
+        
+        messages.success(request, f"Results for {location}", extra_tags='success')
         context = {
             "organizations": organizations,
             "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
@@ -202,12 +195,45 @@ def shelters(request):
             return render(request, 'adopt/shelters.html', context)
         return render(request, 'adopt/shelters.html')
 
+def shelters_ajax(request):
+    location = f"{request.GET['city']}, {request.GET['state']}"
+    if 'zip' in request.GET and request.GET['zip'] != '':
+        location = request.GET['zip']
+    if 'distance' in request.GET:
+        distance = request.GET['distance']
+    else:
+        distance = 5
+    if 'sort' in request.GET:
+        sort = request.GET['sort']
+    else:
+        sort = None
+    organizations = Paginator(pf.organizations(location=location, distance=distance, pages=None, sort=sort)['organizations'],5)
+    page = request.GET.get('page', 1)
+    try:
+        organizations = organizations.page(page)
+    except PageNotAnInteger:
+        organizations = organizations.page(1)
+    except EmptyPage:
+        organizations = organizations.page(organizations.num_pages)
+    path = ''
+    path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in request.GET.items() if not key=='page'])
+    context = {
+        "organizations": organizations,
+        "closest": pf.organizations(location=location, distance=distance, pages=None, sort='distance')['organizations'][0],
+        "path": path
+    }    
+    return render(request, 'snippets/shelters_snippet.html', context)
+
 
 def shelter_detail(request, shelter_id):
     organization = pf.organizations(organization_id=shelter_id)
+    if 'sort' in request.GET:
+        sort = request.GET['sort']
+    else:
+        sort = None
     context = {
         "organization": organization['organizations'],
-        "dogs": pf.animals(organization_id=shelter_id, pages=None, animal_type='dog')['animals'],
+        "dogs": pf.animals(organization_id=shelter_id, pages=None, animal_type='dog', sort=sort)['animals'],
         "breeds": pf.breeds(types=['dog']),
     }
     if 'user_id' in request.session:
@@ -230,12 +256,10 @@ def add_favorite(request, dog_id):
         return redirect('pet_detail', dog_id)
     # check if pet is already in DB:
     pet = Pet.objects.filter(petfinder_id__iexact=dog_id)
-    print (pet)
 
     # if not in DB, create new Pet, storing Pet's petfinder_id in DB:
     if len(pet) < 1:
         new_pet = Pet.objects.create(petfinder_id=dog_id)
-        print("Created new Pet record.")
         this_pet = Pet.objects.get(id=new_pet.id)
 
     else:
@@ -247,7 +271,6 @@ def add_favorite(request, dog_id):
     messages.success(request, "Successfully added to your favorites!")
 
     return redirect('pet_detail', dog_id)
-
 
 def remove_favorite(request, dog_id):
     # get the pet

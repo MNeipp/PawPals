@@ -108,22 +108,22 @@
                             <br>
                             <img class="mx-auto" src="../static/adopt/images/shelter_icon.png" alt="Card image cap" style="width:100px;height:100px;">
                             <div class="card-body">
-                                <h5 class="card-title">{{organization.name|upper}}</h5>
+                                <h5 class="card-title"><a href="{% url 'shelter_detail' organization.id %}">{{organization.name|upper}}</a></h5>
                                 {% if organization.address.address1 == None %}
-                                    <p>Location: <a href="#" class="card-text">{{organization.address.city}}, {{organization.address.state}}</a></p>
+                                    <p>Location: <a href="{% url 'shelters' %}?city={{organization.address.city}}&state={{organization.address.state}}" class="card-text">{{organization.address.city}}, {{organization.address.state}}</a></p>
                                 {% else %}
-                                <p>Location: <a href="#" class="card-text">{{organization.address.address1}}
+                                <p>Location: <a href="https://www.google.com/maps/place/{{organization.address.address1}}%{{organization.address.city}}%{{organization.address.state}}" class="card-text">{{organization.address.address1}}
                                     <br> {{organization.address.city}}, {{organization.address.state}}</a></p>
                                 {% endif %}
                                 {% if organization.phone == None %}
                                 <p>Phone: <a href="#" class="card-text">Not Listed</a></p>
                                 {% else %}
-                                <p>Phone: <a href="#" class="card-text">{{organization.phone}}</a></p>
+                                <p>Phone: <a href="tel:{{organization.phone}}" class="card-text">{{organization.phone}}</a></p>
                                 {% endif %}
                                 {% if organization.email == None %}
                                 <p>Email: <a href="#" class="card-text">Not Listed</a></p>
                                 {% else %}
-                                <p>Email: <a href="#" class="card-text">{{organization.email}}</a></p>
+                                <p>Email: <a href="mailto:{{organization.email}}" class="card-text">{{organization.email}}</a></p>
                                 {% endif %}
                                 <a href="{% url 'shelter_detail' organization.id %}" class="btn btn-primary">Shelter Details & Contact</a>
                             </div>
@@ -137,13 +137,19 @@
                     {{message}}
                 {% endfor %}
                 {% endif %}
-                <button type="submit" href="#" class="btn btn-outline-info">Ask About Me</button>
+                <a type="submit" href="mailto:{{organization.email}}" class="btn btn-outline-info">Ask About Me</a>
+                {% if logged_user %}
                 {% if dog.animals.id in faves %}
                 <a href="{% url 'remove_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.animals.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
                 {% else %}
                 <a href="{% url 'add_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'remove_favorite' dog.animals.id %}"><i class='far fa-heart' style="font-size: x-large; color:crimson;" alt_class="fas fa-heart"></i></a> 
                 {% endif %}
+                {% else %}
+                <a href="" class="badge badge-light align-self-end mr-2" data-toggle="modal" data-target="#favoritesModal"><i class='far fa-heart' style="font-size: x-large; color:crimson;"></i></a> 
+                {% endif %}
+                <br>
                 <div>
+                    <br>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: contain;">
                     <div class="row d-flex justify-content-around">
                         {% if not dog.animals.photos.1.full %}
@@ -157,7 +163,19 @@
                 </div>
             </div>
         </div> 
-    </div>        
+    </div>
+
+    <div class="modal fade " tabindex="-1" role="dialog" id="favoritesModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-body text-center">
+              <p class="text-primary text-center font-weight-bolder">You must log in to add a dog to your favorites!</p>
+              <a href="{% url 'login' %}?next={{ request.path|urlencode }}" class="btn btn-info">Login</a>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">No Thanks</button>
+            </div>
+          </div>
+        </div>
+    </div>
 
 <script>
 // Script to load default if no images

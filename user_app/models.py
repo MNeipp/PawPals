@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from adopt_app.models import Pet
 import bcrypt, re
+from PIL import Image
 # from django_mysql.models import ListCharField
 
 
@@ -57,6 +58,7 @@ class User(models.Model):
     email = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     has_faves = models.ManyToManyField(Pet, related_name="faved_by")
+    image = models.ImageField(default='profile_pictures/default.png', blank=True, null=True, upload_to='profile_pictures')
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
     objects = userManager()

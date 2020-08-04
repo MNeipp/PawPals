@@ -4,16 +4,16 @@
 
 {% block content %}
 
-<div class="container-fluid border">
+<div class="container-fluid">
     <br>
-    <h3 class="type">{{logged_user.first_name}} {{logged_user.last_name}}</h3>
+    <h3 class="type">{{logged_user.first_name}} {{logged_user.last_name}} <img src="{{logged_user.image.url}}" alt="Profile photo for {{logged_user.first_name}}" class="round float-right"></h3>
     <br>
     <br>
 
     <div class="row">
-        <div class="col-4 border">
+        <div class="col-4">
             <img src="/static/adopt/images/clouds-girl-mountain-dog-36372.jpg" alt="" style="width:100%">
-            <img src="{{logged_user.image.url}}" alt="Profile photo for {{logged_user.first_name}}" style="width:100%">
+
 
             <form action="{% url 'update_user_profile' %}" class="mt-0" method="POST" id="update-info" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -24,7 +24,7 @@
                 <small id="fileHelp" class="form-text text-muted">Upload a new profile picture</small>
             </div>
         </div>
-        <div class="col-4 border">
+        <div class="col-4">
             <br>
             <h4 class="text-center type">Contact Information</h4>
             <br>
@@ -63,7 +63,7 @@
         </div>
         </form>
 
-        <div class="col-4 border">
+        <div class="col-4">
             <br>
             <h4 class="text-center type">Login Information</h4>
             <br>
@@ -105,7 +105,7 @@
     </div>
     <div class="text-center">
         <br>
-        <p><a href="{% url 'favorites' logged_user.id%}">Take Me To My Favorites</a></p>
+        <p><a href="{% url 'favorites' %}">Take Me To My Favorites</a></p>
         <br>
         <br>
     </div>

@@ -1,7 +1,11 @@
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import render, reverse, redirect, HttpResponseRedirect
 from django.contrib import messages
 from .models import User
-import bcrypt
+import bcrypt, petpy
+from adopt_app.models import Pet
+
+pf = petpy.Petfinder(key='cET5qlEkj0mMIFKIFkigu7y5mOk6hBeiYKLzylnaHvleQan7y6', secret='gq5c8x0leW4pOs65cXuXu3KV6kiCCPvIxLl4K4sM')
+
 
 # Create your views here.
 
@@ -19,7 +23,10 @@ def login(request):
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
-                return redirect(reverse('home'))
+                next = request.POST.get('next', '/')
+                if next == '':
+                    return redirect(reverse('search'))
+                return HttpResponseRedirect(next)
             else:
                 messages.error(request, "Incorrect password or e-mail", extra_tags="password")
                 return redirect(reverse('login'))
@@ -81,10 +88,6 @@ def update_profile(request):
     logged_user.first_name = request.POST['first_name']
     logged_user.last_name = request.POST['last_name']
     logged_user.email = request.POST['email']
-    if 'anonymous' in request.POST:
-        logged_user.anonymous = True
-    else:
-        logged_user.anonymous = False
     if 'profile_picture' in request.FILES:
         logged_user.image = request.FILES['profile_picture']
     logged_user.save()
@@ -113,11 +116,29 @@ def update_password(request):
         return redirect(reverse('user_profile'))
 
 
-def favorites(request, id):
+def favorites(request):
     # return user's favorites
+    if 'user_id' not in request.session:
+        return redirect(reverse('home'))
     logged_user = User.objects.get(id=request.session['user_id'])
+    pets = Pet.objects.filter(faved_by__id=request.session['user_id'])
+    fave_ids = [pet.petfinder_id for pet in pets]
+    faves = []
+    adoption_count = 0
+    for pet in pets:
+        try:
+            faves.append(pf.animals(animal_id=pet.petfinder_id)['animals'])
+        except:
+            # Catches pets no longer available and removes them from the user's favorites
+            adoption_count += 1
+            this_pet = Pet.objects.get(petfinder_id__iexact=pet.petfinder_id)
+            logged_user.has_faves.remove(this_pet)
+            this_pet.delete()
     context = {
         'logged_user': logged_user,
+        'faves': faves,
+        'adoption_count': adoption_count,
+        'fave_ids': fave_ids
     }
 
     return render(request, 'favorites.html', context)
