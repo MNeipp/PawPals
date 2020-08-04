@@ -29,7 +29,7 @@
                 <a class="nav-link" href="{% url 'about' %}">About Us</a>
                 {% if logged_user %}
                 <a class="nav-link" href="{% url 'user_profile' %}">Profile</a>
-                <a class="nav-link" href="{% url 'favorites' logged_user.id%}">Favorites</a>
+                <a class="nav-link" href="{% url 'favorites'%}">Favorites</a>
 
                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 {% else %}

@@ -147,7 +147,9 @@
                 {% else %}
                 <a href="" class="badge badge-light align-self-end mr-2" data-toggle="modal" data-target="#favoritesModal"><i class='far fa-heart' style="font-size: x-large; color:crimson;"></i></a> 
                 {% endif %}
+                <br>
                 <div>
+                    <br>
                     <img src="{{dog.animals.photos.0.full }}" alt="Picture of {{dog.animals.name}}" width="550" height="550" class='main-img' style="object-fit: contain;">
                     <div class="row d-flex justify-content-around">
                         {% if not dog.animals.photos.1.full %}
