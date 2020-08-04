@@ -4,26 +4,29 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container-fluid">
     <br>
-    <h3 class="type">{{logged_user.first_name}} {{logged_user.last_name}}</h3>
+    <h3 class="type">{{logged_user.first_name}} {{logged_user.last_name}} <img src="{{logged_user.image.url}}" alt="Profile photo for {{logged_user.first_name}}" class="round float-right"></h3>
     <br>
     <br>
 
     <div class="row">
         <div class="col-4">
-            <img src="{{logged_user.image.url}}" alt="Profile photo for {{logged_user.first_name}}" class="round float-center" style="width: 50%; height:auto">
+            <img src="/static/adopt/images/clouds-girl-mountain-dog-36372.jpg" alt="" style="width:100%">
+
+
             <form action="{% url 'update_user_profile' %}" class="mt-0" method="POST" id="update-info" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="form-group mt-3">
-                    <input type="hidden" name="user_id" value={{logged_user.id}}>
-                    <input type="file" name="profile_picture" id="profile_picture" class="">
-                    <small id="fileHelp" class="form-text text-muted">Upload a new profile picture</small>
-                </div>
+
+            <div class="form-group mt-3">
+                <input type="hidden" name="user_id" value={{logged_user.id}}>
+                <input type="file" name="profile_picture" id="profile_picture" class="">
+                <small id="fileHelp" class="form-text text-muted">Upload a new profile picture</small>
+            </div>
         </div>
         <div class="col-4">
             <br>
-            <h4 class="type">Contact Information</h4>
+            <h4 class="text-center type">Contact Information</h4>
             <br>
             <div class="form-group">
                 <label for="email" class="col-form-label text-black">Email:</label>
@@ -55,18 +58,18 @@
                 {% endif %}
                 {% endfor %}
             </div>
-            <!-- <input type="submit" value="Update" class="btn btn-info">
-            <input type="submit" value="Update Info" class="btn btn-custom ml-auto"> -->
+            <input type="submit" value="Update" class="btn btn-info">
+            <input type="submit" value="Update Info" class="btn btn-custom ml-auto">
         </div>
-        <!-- </form> -->
+        </form>
 
         <div class="col-4">
             <br>
-            <h4 class="type">Login Information</h4>
+            <h4 class="text-center type">Login Information</h4>
             <br>
 
-            <!-- <form action="{% url 'update_password' %}" class="mt-0" method="POST" id="update_password">
-                {% csrf_token %} -->
+            <form action="{% url 'update_password' %}" class="mt-0" method="POST" id="update_password">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="new-password" class="col-form-label text-black">Current Password:</label>
                     <input type="password" class="form-control col-sm-9" name="current_password" id="password">
@@ -95,15 +98,16 @@
                     {% endif %}
                     {% endfor %}
                 </div>
+                <input type="submit" value="Update" class="btn btn-info">
+                <input type="submit" value="Change Password" class="btn btn-custom ml-auto">
+            </form>
         </div>
     </div>
     <div class="text-center">
         <br>
-        <input type="submit" value="Update" class="btn btn-info text-center">
-        </form>
-        <br><br>
-        <p><a href="{% url 'favorites' %}">See My Favorites</a></p>
-        <br><br>
+        <p><a href="{% url 'favorites' %}">Take Me To My Favorites</a></p>
+        <br>
+        <br>
     </div>
 
 </div>

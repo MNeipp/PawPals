@@ -91,24 +91,6 @@ def update_profile(request):
     if 'profile_picture' in request.FILES:
         logged_user.image = request.FILES['profile_picture']
     logged_user.save()
-    if request.POST['current_password']:
-        if bcrypt.checkpw(request.POST['current_password'].encode(), logged_user.password.encode()):
-            if len(request.POST['new_password']) < 8:
-                messages.error(request, "Password must be at least 8 characters long", extra_tags="confirm")
-                return redirect(reverse('user_profile'))
-            elif request.POST['new_password'] != request.POST['confirm_password']:
-                messages.error(request, "Passwords don't match", extra_tags="confirm")
-                return redirect(reverse('user_profile'))
-            else:
-                password = request.POST['new_password']
-                pswd_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-                logged_user.password = pswd_hash
-                logged_user.save()
-                return redirect(reverse('user_profile'))
-        else:
-            messages.error(request, "Incorrect password", extra_tags="password")
-            return redirect(reverse('user_profile'))
-
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 
@@ -122,7 +104,7 @@ def update_password(request):
             return redirect(reverse('user_profile'))
         elif request.POST['new_password'] != request.POST['confirm_password']:
             messages.error(request, "Passwords don't match", extra_tags="confirm")
-            return redirect(reverse('user_profile'))
+            return redirect(reverse('user_profile'))       
         else:
             password = request.POST['new_password']
             pswd_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
