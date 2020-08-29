@@ -78,7 +78,7 @@
                 </div>
                 <br>
                 <div class="col type">
-                    <h6>How I Am Around...</h6>    
+                    <h6>Who Do I Get Along With?</h6>    
                         {% if dog.animals.environment %}
                             {% for k, v in dog.animals.environment.items %}
                                 {% if v == True %}
@@ -137,7 +137,7 @@
                     {{message}}
                 {% endfor %}
                 {% endif %}
-                <a type="submit" href="mailto:{{organization.email}}" class="btn btn-outline-info">Ask About Me</a>
+                <a type="submit" href="mailto:{{organization.email}}?subject=Pet Adoption Inquiry" class="btn btn-outline-info">Ask About Me</a>
                 {% if logged_user %}
                 {% if dog.animals.id in faves %}
                 <a href="{% url 'remove_favorite' dog.animals.id %}" class="badge badge-light align-self-end mr-2" alt_href="{% url 'add_favorite' dog.animals.id %}"><i class='fas fa-heart' style="font-size: x-large; color:crimson;" alt_class='far fa-heart' ></i></a> 
