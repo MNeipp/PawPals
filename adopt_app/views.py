@@ -13,7 +13,7 @@ today = datetime.today()
 
 def index(request):
     context = {
-        'breed': pf.breeds(types=['dog']),
+        'breeds': pf.breeds(types=['dog']),
         }
     if 'user_id' in request.session:
         context.update({'logged_user': User.objects.get(id=request.session['user_id'])})  
