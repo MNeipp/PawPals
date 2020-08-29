@@ -3,7 +3,6 @@
 
 
 {% block content %}
-
 <div class="container">
     <br>
     <h3 class="type">{{logged_user.first_name}} {{logged_user.last_name}}</h3>
@@ -12,61 +11,68 @@
 
     <div class="row">
         <div class="col-4">
-            <img src="{{logged_user.image.url}}" alt="Profile photo for {{logged_user.first_name}}" class="round float-center" style="width: 50%; height:auto">
-            <form action="{% url 'update_user_profile' %}" class="mt-0" method="POST" id="update-info" enctype="multipart/form-data">
+            <form action="{% url 'update_picture' %}" id="profile_pic_form" enctype="multipart/form-data">
                 {% csrf_token %}
+                <div id="profile_picture">
+                    <img src="{{logged_user.image.url}}" alt="Profile photo for {{logged_user.first_name}}"
+                    class="round float-center" style="width: 50%; height:auto" id="profile_picture">
+                </div>
                 <div class="form-group mt-3">
-                    <input type="hidden" name="user_id" value={{logged_user.id}}>
-                    <input type="file" name="profile_picture" id="profile_picture" class="">
+                    <input type="file" name="profile_picture" id="upload_picture"class="">
                     <small id="fileHelp" class="form-text text-muted">Upload a new profile picture</small>
                 </div>
+            </form>
+
+
+            
         </div>
         <div class="col-4">
-            <br>
-            <h4 class="type">Contact Information</h4>
-            <br>
-            <div class="form-group">
-                <label for="email" class="col-form-label text-black">Email:</label>
-                <input type="email" class="form-control col-sm-9" name="email" id="email"
-                    value="{{logged_user.email}}">
-                {% for message in messages %}
-                {% if "email" in message.extra_tags %}
-                <p class="text-danger"><small>{{message}}</small></p>
-                {% endif %}
-                {% endfor %}
-            </div>
-            <div class="form-group">
-                <label for="first_name" class="col-form-label text-black">First Name:</label>
-                <input type="text" class="form-control col-sm-9" name="first_name" id="first_name"
-                    value="{{logged_user.first_name}}">
-                {% for message in messages %}
-                {% if "first_name" in message.extra_tags %}
-                <p class="text-danger"><small>{{message}}</small></p>
-                {% endif %}
-                {% endfor %}
-            </div>
-            <div class="form-group">
-                <label for="last_name" class="col-form-label text-black">Last Name:</label>
-                <input type="text" class="form-control col-sm-9" name="last_name" id="last_name"
-                    value="{{logged_user.last_name}}">
-                {% for message in messages %}
-                {% if "last_name" in message.extra_tags %}
-                <p class="text-danger"><small>{{message}}</small></p>
-                {% endif %}
-                {% endfor %}
-            </div>
-            <!-- <input type="submit" value="Update" class="btn btn-info">
-            <input type="submit" value="Update Info" class="btn btn-custom ml-auto"> -->
+            <form action="{% url 'update_user_profile' %}" class="mt-0" method="POST" id="update-info">
+                {% csrf_token %}
+                <br>
+                <h4 class="text-center type">Contact Information</h4>
+                <br>
+                <div class="form-group">
+                    <input type="hidden" name="user_id" value={{logged_user.id}}>
+                    <label for="email" class="col-form-label text-black">Email:</label>
+                    <input type="email" class="form-control col-sm-9" name="email" id="email"
+                        value="{{logged_user.email}}">
+                    {% for message in messages %}
+                    {% if "email" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="first_name" class="col-form-label text-black">First Name:</label>
+                    <input type="text" class="form-control col-sm-9" name="first_name" id="first_name"
+                        value="{{logged_user.first_name}}">
+                    {% for message in messages %}
+                    {% if "first_name" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="last_name" class="col-form-label text-black">Last Name:</label>
+                    <input type="text" class="form-control col-sm-9" name="last_name" id="last_name"
+                        value="{{logged_user.last_name}}">
+                    {% for message in messages %}
+                    {% if "last_name" in message.extra_tags %}
+                    <p class="text-danger"><small>{{message}}</small></p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <input type="submit" value="Update Info" class="btn btn-info">
+            </form>
         </div>
-        <!-- </form> -->
 
         <div class="col-4">
             <br>
-            <h4 class="type">Login Information</h4>
+            <h4 class="text-center type">Login Information</h4>
             <br>
-
-            <!-- <form action="{% url 'update_password' %}" class="mt-0" method="POST" id="update_password">
-                {% csrf_token %} -->
+            <form action="{% url 'update_password' %}" class="mt-0" method="POST" id="update_password">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="new-password" class="col-form-label text-black">Current Password:</label>
                     <input type="password" class="form-control col-sm-9" name="current_password" id="password">
@@ -87,23 +93,22 @@
                 </div>
                 <div class="form-group">
                     <label for="confirm_password" class="col-form-label text-black">Confirm Password:</label>
-                    <input type="password" class="form-control col-sm-9" name="confirm_password"
-                        id="confirm_password">
+                    <input type="password" class="form-control col-sm-9" name="confirm_password" id="confirm_password">
                     {% for message in messages %}
                     {% if "confirm" in message.extra_tags %}
                     <p class="text-danger"><small>{{message}}</small></p>
                     {% endif %}
                     {% endfor %}
                 </div>
+                <input type="submit" value="Change Password" class="btn btn-info">
+            </form>
         </div>
     </div>
     <div class="text-center">
         <br>
-        <input type="submit" value="Update" class="btn btn-info text-center">
-        </form>
-        <br><br>
-        <p><a href="{% url 'favorites' %}">See My Favorites</a></p>
-        <br><br>
+        <p><a href="{% url 'favorites' %}">Take Me To My Favorites</a></p>
+        <br>
+        <br>
     </div>
 
 </div>
@@ -121,5 +126,32 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
 
-{% endblock %}
-
+<script>
+    $('#upload_picture').on('change', function(){
+        let form = $(this).parent().parent()
+        let url = $(form).attr('action')
+        csrftoken = form.serialize().slice(20)
+        var fd = new FormData();
+        var file = this.files[0]
+        fd.append('profile_picture', file)
+        fd.append("csrfmiddlewaretoken", csrftoken);
+        $.ajax({
+            type: 'post',
+            url: $(form).attr('action'),
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(response){
+                console.log(response)
+                $('#profile_picture').html(response)
+            },
+            error: function(response){
+                console.log(response.responseText)
+            }
+        },
+        
+        )
+    }
+    )
+</script>
+{% endblock%}
