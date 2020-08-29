@@ -88,8 +88,6 @@ def update_profile(request):
     logged_user.first_name = request.POST['first_name']
     logged_user.last_name = request.POST['last_name']
     logged_user.email = request.POST['email']
-    if 'profile_picture' in request.FILES:
-        logged_user.image = request.FILES['profile_picture']
     logged_user.save()
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
@@ -114,6 +112,15 @@ def update_password(request):
     else:
         messages.error(request, "Incorrect password", extra_tags="password")
         return redirect(reverse('user_profile'))
+
+def update_picture(request):
+    logged_user = User.objects.get(id=request.session['user_id'])
+    logged_user.image = request.FILES['profile_picture']
+    logged_user.save()
+    context={
+        "logged_user": logged_user
+    }
+    return render (request, "snippets/profile_pic_snippet.html", context)
 
 
 def favorites(request):
