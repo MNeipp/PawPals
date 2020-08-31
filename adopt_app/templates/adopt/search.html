@@ -121,8 +121,12 @@
                 {% endif %}
             <br>
             <div class="container">
-
                 <div class="row infinite-container" id="doggos">
+                    {% if not dogs %}
+                    <div class="col text-center" id="placeholder-img">
+                        <img src="/static/adopt/images/fabian-gieske-cbIKeuURaq8-unsplash_med.jpg" alt="">
+                    </div>
+                    {% endif %}
                     {% for dog in dogs %}
                     <div class="col-sm-4 mb-2 infinite-item">
                         <div class="card text-center">
